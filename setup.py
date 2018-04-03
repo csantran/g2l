@@ -11,22 +11,40 @@ https://github.com/csantran/g2l
 """
 
 from setuptools import setup, find_packages
+from setuptools.command.test import test as TestCommand
 from distutils.version import StrictVersion
 from codecs import open
 from os import path
 
 here = path.abspath(path.dirname(__file__))
 
+# reading long_description from README.rst
 with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
     long_description = f.read()
 
+# execute nosetests with options defined in setup.cfg
+# see http://fgimian.github.io/blog/2014/04/27/running-nose-tests-with-plugins-using-the-setuptools-test-command/
+class NoseTestCommand(TestCommand):
+    def finalize_options(self):
+        TestCommand.finalize_options(self)
+        self.test_args = []
+        self.test_suite = True
+        pass
+
+    def run_tests(self):
+        # Run nose ensuring that argv simulates running nosetests directly
+        import nose
+        nose.run_exit(argv=['nosetests'])
+        pass
+
+    pass
+
+# setup
 setup(
     name='pg2l',
     version='0.1.dev1',
     description='Python package for define parametric L-systems that manipulate graphs',
     long_description=long_description,
-    # long_description_content_type='text/markdown',
-    # see https://stackoverflow.com/questions/26737222/pypi-description-markdown-doesnt-work
     url='https://github.com/csantran/pg2l',
     author='Santran Cédric',
     author_email='santrancedric@gmail.com',
@@ -50,7 +68,8 @@ setup(
     install_requires=['networkx>=2'],  # Optional
     python_requires='>=3',
 
-    test_suite='nose.collector',
+    cmdclass={'test': NoseTestCommand},
+    # test_suite='nose.collector',
     tests_require=['nose'],
     # List additional groups of dependencies here (e.g. development
     # dependencies). Users will be able to install these using the "extras"
@@ -94,19 +113,9 @@ setup(
     #     ],
     # },
 
-    # # List additional URLs that are relevant to your project as a dict.
-    # #
-    # # This field corresponds to the "Project-URL" metadata fields:
-    # # https://packaging.python.org/specifications/core-metadata/#project-url-multiple-use
-    # #
-    # # Examples listed include a pattern for specifying where the package tracks
-    # # issues, where the source is hosted, where to say thanks to the package
-    # # maintainers, and where to support the project financially. The key is
-    # # what's used to render the link text on PyPI.
-    # project_urls={  # Optional
-    #     'Bug Reports': 'https://github.com/pypa/sampleproject/issues',
-    #     'Funding': 'https://donate.pypi.org',
-    #     'Say Thanks!': 'http://saythanks.io/to/example',
-    #     'Source': 'https://github.com/pypa/sampleproject/',
-    # },
+    # additional URLs
+    project_urls={
+        'Bug Reports': 'https://github.com/csantran/pg2l/issues',
+        'Source': 'https://github.com/csantran/pg2l/',
+    },
 )
