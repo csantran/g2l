@@ -1,3 +1,4 @@
+# coding: utf-8
 """
 Setup scriptp for g2l
 
@@ -10,22 +11,26 @@ https://github.com/csantran/g2l
 """
 
 from setuptools import setup, find_packages
+from distutils.version import StrictVersion
 from codecs import open
 from os import path
 
 here = path.abspath(path.dirname(__file__))
 
-with open(path.join(here, 'README.md'), encoding='utf-8') as f:
+with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
     long_description = f.read()
 
 setup(
-    name='g2l',
-    version='0.0.dev1',
+    name='pg2l',
+    version='0.1.dev1',
     description='Python package for define parametric L-systems that manipulate graphs',
     long_description=long_description,
-    long_description_content_type='text/markdown',
-    url='https://github.com/csantran/g2l',
+    # long_description_content_type='text/markdown',
+    # see https://stackoverflow.com/questions/26737222/pypi-description-markdown-doesnt-work
+    url='https://github.com/csantran/pg2l',
     author='Santran Cédric',
+    author_email='santrancedric@gmail.com',
+    license='BSD',
     classifiers=[
         'Development Status :: 2 - Pre-Alpha',
         'Intended Audience :: Developers',
@@ -36,7 +41,6 @@ setup(
         'Topic :: Software Development :: Interpreters',
         'License :: OSI Approved :: BSD License',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
     ],
@@ -44,7 +48,10 @@ setup(
     keywords='parametric l-system graph grammar interpreter',  # Optional
     packages=find_packages(exclude=['contrib', 'docs', 'tests']),  # Required
     install_requires=['networkx>=2'],  # Optional
+    python_requires='>=3',
 
+    test_suite='nose.collector',
+    tests_require=['nose'],
     # List additional groups of dependencies here (e.g. development
     # dependencies). Users will be able to install these using the "extras"
     # syntax, for example:
