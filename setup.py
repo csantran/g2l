@@ -69,12 +69,12 @@ setup(
 
     keywords='parametric l-system graph grammar interpreter',  # Optional
     packages=find_packages(exclude=['contrib', 'docs', 'tests']),  # Required
-    install_requires=['networkx>=2'],  # Optional
-    python_requires='>=3',
+    # install_requires=['networkx>=2'],  # Optional
+    # python_requires='>=3',
 
     cmdclass={'test': NoseTestCommand},
     # test_suite='nose.collector',
-    tests_require=['nose'],
+    # tests_require=['nose'],
     # List additional groups of dependencies here (e.g. development
     # dependencies). Users will be able to install these using the "extras"
     # syntax, for example:
