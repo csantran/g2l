@@ -50,7 +50,7 @@ setup(
     description='Python package for define parametric L-systems that manipulate graphs',
     long_description=long_description,
     url='https://github.com/csantran/pg2l',
-    author='Santran Cédric',
+    author='Cédric Santran',
     author_email='santrancedric@gmail.com',
     license='BSD',
     classifiers=[
