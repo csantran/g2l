@@ -1,13 +1,17 @@
 # coding: utf-8
 """
-Setup scriptp for g2l
+Setup scriptp for pg2l
 
-You can instal g2l with
+You can instal pg2l with
 
 python3 setup.py install
 
+and run test with
+
+python3 setup.py test
+
 See:
-https://github.com/csantran/g2l
+https://github.com/csantran/pg2l
 """
 
 from setuptools import setup, find_packages
