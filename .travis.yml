@@ -6,9 +6,9 @@ python:
 sudo = False
 
 install:
- - pip3 install --user codecov
- - pip3 install --user -r requirements/default.txt
- - pip3 install --user -e .
+ - pip3 install codecov
+ - pip3 install -r requirements/default.txt
+ - pip3 install -e .
 
 after_success:
  - codecov
