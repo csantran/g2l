@@ -4,7 +4,7 @@ python:
  - "3.5"
 
 install:
- - pip3 install --user requirements/default.txt
- - pip3 install -e . --user
+ - pip3 install requirements/default.txt
+ - pip3 install -e .
 
 script: python3 setup.py test
