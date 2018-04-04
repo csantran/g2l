@@ -1,5 +1,6 @@
 pG2L
 ====
+.. image:: https://travis-ci.org/csantran/pg2l.svg?branch=master
 
 Python package for define parametric L-systems that manipulate graphs.
 
