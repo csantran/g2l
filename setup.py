@@ -1,6 +1,6 @@
 # coding: utf-8
 """
-Setup scriptp for pg2l
+Setup script for pg2l
 
 You can instal pg2l with
 
