@@ -162,10 +162,12 @@ class KTree(BaseTree):
         child.parent = self
         self.__children.append(children)
 
-class BTreeRight(object):
+class BTreeLeft(object):
+    """Base class for left object in a BTree"""
     pass
 
-class BTreeLeft(object):
+class BTreeRight(object):
+    """Base class for right object in a BTree"""
     pass
 
 class BTree(BaseTree):
