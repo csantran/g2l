@@ -90,7 +90,7 @@ class BaseTree(ABC, Leaf):
         """Push children into the tree, abstract method implemented in sub classes
         """
         raise NotImplementedError()
-    
+
     def __str__(self):
         """String representation of a tree
 
@@ -110,7 +110,6 @@ class BaseTree(ABC, Leaf):
         :obj:`Leaf`
             all nodes of a tree in deep first pre-order
         """
-        
         yield self
         for child in list(self.children): # TODO remove list casting
             if child:
@@ -159,10 +158,9 @@ class KTree(BaseTree):
 
         if child.parent is not None:
             raise AssertionError('child %s is not orphaned, parent %s' % (child, child.parent))
-        
+
         child.parent = self
         self.__children.append(children)
-
 
 class BTreeRight(object):
     pass
@@ -186,7 +184,6 @@ class BTree(BaseTree):
     def __init__(self):
         super().__init__(**dict())
         self.__children =  OrderedDict((x,None)for x in (BTree.LEFT, BTree.RIGHT))
-        pass
 
     @property
     def children(self):
@@ -244,7 +241,7 @@ class BTree(BaseTree):
 
         if child.parent is not None:
             raise AssertionError('child %s is not orphaned, parent %s' % (child, child.parent))
-        
+
         side = isinstance(child, BTreeLeft) and BTree.LEFT or BTree.RIGHT
         if self.__children[side] is not None:
             raise AttributeError('child already exists %s' % self.__children[side])
@@ -273,10 +270,9 @@ def shallow_copy(tree):
         orphaned shallow copy of a tree
     """
     t_copy = type(tree)(**tree.data)
-    
+
     if isinstance(tree, BaseTree):
         for child in tree.children:
             t_copy.push(shallow_copy(child))
-            
-    return t_copy
 
+    return t_copy
