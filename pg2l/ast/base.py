@@ -178,7 +178,7 @@ class BTree(BaseTree):
         LEFT:  BTreeLeft,
         RIGHT: BTreeRight,
         }
-    
+
     repr_string = '(BTREE %s)'
 
     def __init__(self):
