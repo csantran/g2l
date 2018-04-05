@@ -8,7 +8,7 @@
 #    Cédric Santran <santrancedric@gmail.com>
 """
 Base classes for ast.
-Contain :obj:`Leaf`, :obj:`BaseTree`, :obj:`Ktree` and :obj:`Btree`
+Contain :obj:`Leaf`, :obj:`BaseTree`, :obj:`KTree` and :obj:`BTree`
 """
 from abc import ABC, abstractmethod
 from collections import OrderedDict
@@ -143,7 +143,7 @@ class KTree(BaseTree):
 
         Parameters
         ----------
-        child : :obj:`Btree`
+        child : :obj:`BTree`
             a btree instance
 
         Raises
@@ -151,7 +151,7 @@ class KTree(BaseTree):
         AssertionError
            if child is not orphaned and its parent is not set to None
         TypeError
-           if child is not a Btree instance
+           if child is not a :obj:`BTree` instance
         """
         if not isinstance(child, BTree):
             raise TypeError('child wrong type %s, try to push it in %s' % (child, self))
@@ -163,11 +163,11 @@ class KTree(BaseTree):
         self.__children.append(children)
 
 class BTreeLeft(object):
-    """Base class for left object in a BTree"""
+    """Base class for left object in a :obj:`BTree`"""
     pass
 
 class BTreeRight(object):
-    """Base class for right object in a BTree"""
+    """Base class for right object in a :obj:`BTree`"""
     pass
 
 class BTree(BaseTree):
@@ -225,14 +225,14 @@ class BTree(BaseTree):
         Parameters
         ----------
         child : :obj:`Leaf`
-            a child, must be a Leaf or a Ktree instance and a sub class of BtreeLeft or BtreeRight
+            a child, must be a :obj:`Leaf` or a :obj:`KTree` instance and a sub class of :obj:`BTreeLeft` or :obj:`BTreeRight`
 
         Raises
         ------
         AssertionError
            if child is not orphaned and its parent is not set to None
         TypeError
-           if child is not a Leaf or a Ktree instance
+           if child is not a :obj:`Leaf` or a :obj:`KTree` instance
         AttributeError
            if tree have already a child
         """
