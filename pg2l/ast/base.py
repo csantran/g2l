@@ -1,145 +1,283 @@
+# -*- coding : utf-8 -*-
+#    Copyright (C) 2018 by
+#    Cédric Santran <santrancedric@gmail.com>
+#    All rights reserved.
+#    BSD license.
+#
+# Authors:
+#    Cédric Santran <santrancedric@gmail.com>
 """
-This is the ast.base module
-
-For example,
-
->>> x = Node('A1')
->>> y = Node('B')
->>> z = Module()
->>> z.push(x)
->>> z.push(y)
->>> print(repr(z))
-(Module A1B)
->>> print([x for x in z])
-[(Module A1B), (Node A1), (Node B)]
-
+Base classes for ast.
+Contain :obj:`Leaf`, :obj:`BaseTree`, :obj:`Ktree` and :obj:`Btree`
 """
-        
-class String(object):
-    pass
+from abc import ABC, abstractmethod
+from collections import OrderedDict
 
-class Node(String):
-    """AST Node class"""
-    repr = '(Node %s)'
 
-    def __init__(self, value):
-        """
-        >>> x = Node('A3')
-        >>> x.value
-        'A3'
-        """
+class Leaf(object):
+    """
+    A simple terminal object that contains data
         
+    Parameters
+    ----------
+    data : \*\*dict
+        leaf data's in an unpacked :obj:`dict` or :obj:`list` of :obj:`(key,value)` pairs
+            
+    Attributes
+    ----------
+
+    repr_string : formated string
+        class attribut, a formated string used by __repr__, '%s' is then replaced by the value returned by __str__
+
+    data : dict
+        the data dictionary of the leaf
+
+    parent : :obj:`BaseTree`
+        None if leaf is orphaned otherwise a BaseTree object
+
+    Examples
+    --------
+    A simple symbol 'A'
+
+    >>> x = Leaf(symbol='A')
+    >>> print(repr(x))
+    (LEAF {'symbol': 'A'})
+    """
+    repr_string = '(LEAF %s)'
+
+    def __init__(self, **data):
         super().__init__()
-        self.__value = value
-        self.__parent = None
-        pass
-
-    @property
-    def value(self):
-        """Assessor to the value of the node.
-
-        :return: node value's
-        :rtype: string
-        """
-        return self.__value
-
-    @property
-    def parent(self):
-        """Node parent's, a module or None if node is orphaned"""
-        return self.__parent
-
-    def set_parent(self, parent):
-        """Set node parent's to parent
-        :return: self
-        """
-        self.__parent = parent
-        return self
+        self.data = data
+        self.parent = None
 
     def __repr__(self):
-        return self.repr % str(self)
+        """Representation of leaf
+
+        Returns
+        -------
+        str
+            string representation of leaf
+
+        """
+        return self.repr_string % str(self)
 
     def __str__(self):
-        return str(self.value)
+        """String representation of leaf
+
+        Returns
+        -------
+        str
+            string representation of leaf data's
+        """
+        return str(self.data)
 
     def __iter__(self):
         yield self
     
     pass
 
-class Module(Node):
+class BaseTree(ABC, Leaf):
+    """Base class for trees
     """
-    A simple k-ary tree, a tree for pg2l expression where branches are modules and leaves are nodes
-    """
-    repr = '(Module %s)'
-
-    def __init__(self, value=None):
-        super().__init__(value)
-        self.__children =  []
-        pass
-
     @property
-    def children(self): return tuple(self.__children)
-
-    @property
-    def value(self): return ''.join(str(x) for x in self.__children)
-    
-    def push(self, children):
-        """Push children into module by adding them to the end of the children's list.
-
-        :param children: Children to add to the module. The parent of each child must be set to None because the new child must be orphaned, otherwhise an exception is raised.
-
-        :type children: A list of children or a single child, child can be either a node or another module, otherwhise an exception is raised.
-
-        :return: None
-        :rtype: NoneType
+    @abstractmethod
+    def children(self):
+        """Property getter for tree children's, abstract method implemented in sub classes
         """
+        raise NotImplementedError()
 
-        # if children is not an iterable, turn it into a list
-        if not isinstance(children, (list, tuple)):
-            children = [children]
-
-        # check if each child if of the right type
-        for child in children:
-            if not isinstance(child, (Node, Module)):
-                raise Exception('try to push a child %s who is neither a node nor a module in a module %s' %
-                                    (repr(children), repr(self)))
-
-        # check if each child is orphaned
-        for child in children:
-            if child.parent is not None:
-                raise Exception('child %s must by orphaned, but he already has a parent %s' %
-                                    (repr(child), repr(child.parent)))
-
-        # set new chidren's parent
-        [child.set_parent(self) for child in children]
-
-        # and add new children at the end of the list
-        self.__children += list(children)
-        pass
+    @abstractmethod
+    def push(self, child):
+        """Push children into the tree, abstract method implemented in sub classes
+        """
+        raise NotImplementedError()
     
+    def __str__(self):
+        """String representation of a tree
+
+        Returns
+        -------
+        str
+            string representation of a tree and all its children recursively
+        """
+        return ''.join(str(x) for x in self.children)
+
     def __iter__(self):
-        """
-        Deep first pre order traversal of an expression.
+        """Iterator over the tree,
+        deep first pre-order traversal of a tree
 
-        :return: Return an iterator over the leaves of an expression in the order they appear 
-                 when we read the expression from left to right.
-        :rtype: generator
+        Yields
+        ------
+        :obj:`Leaf`
+            all nodes of a tree in deep first pre-order
         """
         
         yield self
-        for child in self.children:
+        for child in list(self.children): # TODO remove list casting
             if child:
                 yield from child
+
+        pass
     
     pass
 
-def copy(x):
-    """Return an orphaned copy of x by creating a new instance of x and his children recursively if he has any. If x is an instance of Leaf, the new instance is initialized with x.value.
-
-    :return: orphaned copy of x
-    :rtype: list
+class KTree(BaseTree):
     """
-    x_copy = not isinstance(x, BaseTree) and type(x)(x.value) or type(x)()
-    isinstance(x, BaseTree) and [x_copy.push(__shallow_copy(y)) for y in x.children]
-    return x_copy
+    A simple k-ary tree
+
+    """
+    repr_string = '(KTREE %s)'
+
+    def __init__(self):
+        super().__init__(**dict())
+        self.__children =  []
+
+    @property
+    def children(self):
+        """Property getter for tree children's
+        Returns
+        -------
+        :obj:`tuple`
+           tuple of tree direct children
+        """
+        return tuple(self.__children)
+
+    def push(self, child):
+        """Push child into parent children list's
+
+        Insert child in tree, child is appended to the end of tree instance children list's.
+
+        Parameters
+        ----------
+        child : :obj:`Btree`
+            a btree instance
+
+        Raises
+        ------
+        AssertionError
+           if child is not orphaned and its parent is not set to None
+        TypeError
+           if child is not a Btree instance
+        """
+        if not isinstance(child, BTree):
+            raise TypeError('child wrong type %s, try to push it in %s' % (child, self))
+
+        if child.parent is not None:
+            raise AssertionError('child %s is not orphaned, parent %s' % (child, child.parent))
+        
+        child.parent = self
+        self.__children.append(children)
+
+
+class BTreeRight(object):
+    pass
+
+class BTreeLeft(object):
+    pass
+
+class BTree(BaseTree):
+    """
+    A simple binary tree
+    """
+    LEFT = 'left'
+    RIGHT = 'right'
+    _map_side = {
+        LEFT:  BTreeLeft,
+        RIGHT: BTreeRight,
+        }
+    
+    repr_string = '(BTREE %s)'
+
+    def __init__(self):
+        super().__init__(**dict())
+        self.__children =  OrderedDict((x,None)for x in (BTree.LEFT, BTree.RIGHT))
+        pass
+
+    @property
+    def children(self):
+        """Property getter for tree children's
+        Returns
+        -------
+        :obj:`tuple`
+           tuple of tree direct children
+        """
+        return tuple(x for x in self.__children.values() if x)
+
+    @property
+    def left(self):
+        """Property getter for tree left child
+        Returns
+        -------
+        :obj:`Leaf`
+           left child
+        """
+        return self.__children[BTree.LEFT]
+
+    @property
+    def right(self):
+        """Property getter for tree right child
+        Returns
+        -------
+        :obj:`Leaf`
+           right child
+        """
+        return self.__children[BTree.RIGHT]
+
+    def push(self, child):
+        """Push child into parent children list's
+
+        Insert child in tree, child is appended to the end of tree instance children list's.
+
+        Parameters
+        ----------
+        child : :obj:`Leaf`
+            a child, must be a Leaf or a Ktree instance and a sub class of BtreeLeft or BtreeRight
+
+        Raises
+        ------
+        AssertionError
+           if child is not orphaned and its parent is not set to None
+        TypeError
+           if child is not a Leaf or a Ktree instance
+        AttributeError
+           if tree have already a child
+        """
+        if isinstance(child, BTree) \
+          or not isinstance(child, (Leaf, KTree)) \
+          or not isinstance(child, (BTreeLeft, BTreeRight)):
+            raise TypeError('child wrong type %s, try to push it in %s' % (child, self))
+
+        if child.parent is not None:
+            raise AssertionError('child %s is not orphaned, parent %s' % (child, child.parent))
+        
+        side = isinstance(child, BTreeLeft) and BTree.LEFT or BTree.RIGHT
+        if self.__children[side] is not None:
+            raise AttributeError('child already exists %s' % self.__children[side])
+
+        child.parent = self
+        self.__children[side] = child
+
+def shallow_copy(tree):
+    """Do a shallow copy of tree
+
+    Examples
+    --------
+    >>> x = Leaf(symbol='A')
+    >>> y = shallow_copy(x)
+    >>> print(y)
+    {'symbol': 'A'}
+
+    Parameters
+    ----------
+    tree: :obj:`tree`
+       a tree
+
+    Returns
+    -------
+    :obj:`tree`
+        orphaned shallow copy of a tree
+    """
+    t_copy = type(tree)(**tree.data)
+    isinstance(tree, BaseTree) and [t_copy.push(shallow_copy(child)) for child in tree.children]
+    return t_copy
 
