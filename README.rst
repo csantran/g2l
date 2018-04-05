@@ -5,8 +5,11 @@ pG2L
   
 .. |pic2| image:: https://codecov.io/gh/csantran/pg2l/branch/master/graph/badge.svg
   :target: https://codecov.io/gh/csantran/pg2l
-  
-|pic1| |pic2|
+
+.. |pic3| image:: https://api.codacy.com/project/badge/Grade/bd91186dcd47416bb0a0c022de0cc463
+  :target: https://www.codacy.com/app/santrancedric/pg2l
+
+|pic1| |pic2| |pic3|
 
 Python package for define parametric L-systems that manipulate graphs.
 
