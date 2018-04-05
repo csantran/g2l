@@ -17,12 +17,12 @@ from collections import OrderedDict
 class Leaf(object):
     """
     A simple terminal object that contains data
-    
+
     Parameters
     ----------
     data : \*\*dict
         leaf data's in an unpacked :obj:`dict` or :obj:`list` of :obj:`(key,value)` pairs
-            
+
     Attributes
     ----------
 
@@ -115,10 +115,6 @@ class BaseTree(ABC, Leaf):
         for child in list(self.children): # TODO remove list casting
             if child:
                 yield from child
-
-        pass
-    
-    pass
 
 class KTree(BaseTree):
     """

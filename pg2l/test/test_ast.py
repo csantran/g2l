@@ -6,9 +6,7 @@ class TestAst(unittest.TestCase):
     def test_Node(self):
         # n = Node('A1')
         # print(n)
-        ...
+        pass
 
 if __name__ == '__main__':
     unittest.main(verbosity=2)
-
-        

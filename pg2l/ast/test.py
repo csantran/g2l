@@ -6,10 +6,10 @@ class TestAstBase(unittest.TestCase):
     def test_bynary_tree_kt_kt(self):
         class A(KTree, BTreeLeft):
             pass
-               
+
         class B(KTree, BTreeRight):
             pass
-        
+
         a = A()
         b = B()
 
@@ -28,7 +28,7 @@ class TestAstBase(unittest.TestCase):
         root = BTree()
         a = shallow_copy(a)
         b = shallow_copy(b)
-        
+
         self.assertIsNone(root.left)
         self.assertIsNone(root.right)
 
@@ -43,10 +43,10 @@ class TestAstBase(unittest.TestCase):
     def test_bynary_tree_leaf_leaf(self):
         class A(Leaf, BTreeLeft):
             pass
-               
+
         class B(Leaf, BTreeRight):
             pass
-        
+
         a = A(symbol='A')
         b = B(jump=1)
 
@@ -68,7 +68,7 @@ class TestAstBase(unittest.TestCase):
 
         a = shallow_copy(a)
         b = shallow_copy(b)
-        
+
         root.push(b)
         self.assertEqual(root.right, b)
         self.assertIsNone(root.left)
@@ -81,5 +81,3 @@ class TestAstBase(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main(verbosity=2)
-
-        
