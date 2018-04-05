@@ -1,6 +1,6 @@
 import unittest
 
-from pg2l.ast.base import Leaf, KTree, BTree, BTreeLeft, BTreeRight, shallow_copy
+from pg2l.ast.base import Leaf, KTree, BTree, BTreeLeft, BTreeRight, copy
 
 class TestAstBase(unittest.TestCase):
     def test_bynary_tree_kt_kt(self):
@@ -26,8 +26,8 @@ class TestAstBase(unittest.TestCase):
         self.assertEqual(root.right, b)
 
         root = BTree()
-        a = shallow_copy(a)
-        b = shallow_copy(b)
+        a = copy(a)
+        b = copy(b)
 
         self.assertIsNone(root.left)
         self.assertIsNone(root.right)
@@ -66,8 +66,8 @@ class TestAstBase(unittest.TestCase):
         self.assertIsNone(root.left)
         self.assertIsNone(root.right)
 
-        a = shallow_copy(a)
-        b = shallow_copy(b)
+        a = copy(a)
+        b = copy(b)
 
         root.push(b)
         self.assertEqual(root.right, b)

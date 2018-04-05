@@ -249,13 +249,13 @@ class BTree(BaseTree):
         child.parent = self
         self.__children[side] = child
 
-def shallow_copy(tree):
+def copy(tree):
     """Do a shallow copy of tree
 
     Examples
     --------
     >>> x = Leaf(symbol='A')
-    >>> y = shallow_copy(x)
+    >>> y = copy(x)
     >>> print(y)
     {'symbol': 'A'}
 
@@ -273,6 +273,6 @@ def shallow_copy(tree):
 
     if isinstance(tree, BaseTree):
         for child in tree.children:
-            t_copy.push(shallow_copy(child))
+            t_copy.push(copy(child))
 
     return t_copy
