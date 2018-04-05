@@ -4,6 +4,14 @@ pg2l.ast package
 Submodules
 ----------
 
+pg2l.ast.ast module
+-------------------
+
+.. automodule:: pg2l.ast.ast
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 pg2l.ast.base module
 --------------------
 
