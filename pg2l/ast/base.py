@@ -17,7 +17,7 @@ from collections import OrderedDict
 class Leaf(object):
     """
     A simple terminal object that contains data
-        
+    
     Parameters
     ----------
     data : \*\*dict
@@ -73,8 +73,7 @@ class Leaf(object):
 
     def __iter__(self):
         yield self
-    
-    pass
+
 
 class BaseTree(ABC, Leaf):
     """Base class for trees
@@ -278,6 +277,10 @@ def shallow_copy(tree):
         orphaned shallow copy of a tree
     """
     t_copy = type(tree)(**tree.data)
-    isinstance(tree, BaseTree) and [t_copy.push(shallow_copy(child)) for child in tree.children]
+    
+    if isinstance(tree, BaseTree):
+        for child in tree.children:
+            t_copy.push(shallow_copy(child))
+            
     return t_copy
 

@@ -16,14 +16,13 @@ https://github.com/csantran/pg2l
 
 from setuptools import setup, find_packages
 from setuptools.command.test import test as TestCommand
-from distutils.version import StrictVersion
-from codecs import open
+from codecs import open as codec_open
 from os import path
 
 here = path.abspath(path.dirname(__file__))
 
 # reading long_description from README.rst
-with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
+with codec_open(path.join(here, 'README.rst'), encoding='utf-8') as f:
     long_description = f.read()
 
 # execute nosetests with options defined in setup.cfg
@@ -33,15 +32,11 @@ class NoseTestCommand(TestCommand):
         TestCommand.finalize_options(self)
         self.test_args = []
         self.test_suite = True
-        pass
 
     def run_tests(self):
         # Run nose ensuring that argv simulates running nosetests directly
         import nose
         nose.run_exit(argv=['nosetests'])
-        pass
-
-    pass
 
 # setup
 setup(

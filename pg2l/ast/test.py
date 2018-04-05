@@ -3,7 +3,6 @@ import unittest
 from pg2l.ast.base import Leaf, KTree, BTree, BTreeLeft, BTreeRight, shallow_copy
 
 class TestAstBase(unittest.TestCase):
-    
     def test_bynary_tree_kt_kt(self):
         class A(KTree, BTreeLeft):
             pass
@@ -79,9 +78,6 @@ class TestAstBase(unittest.TestCase):
         self.assertEqual(root.right, b)
 
         self.assertEqual(repr(root), '(BTREE {\'symbol\': \'A\'}{\'jump\': 1})')
-    
-    
-
 
 if __name__ == '__main__':
     unittest.main(verbosity=2)
