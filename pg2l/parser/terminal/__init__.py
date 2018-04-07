@@ -9,3 +9,4 @@
 from .letter import LetterLexer
 from .number import NumberLexer
 from .constant import LBRLexer, RBRLexer
+from .operator import RewriteLexer, GLContextLexer, GRContextLexer, SLContextLexer, SRContextLexer
