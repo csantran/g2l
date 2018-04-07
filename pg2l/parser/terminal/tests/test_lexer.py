@@ -34,5 +34,37 @@ class TestLexer(unittest.TestCase):
         lexer.lexer.input('2')
         self.assertEqual(get_tokens(lexer), [])
 
+    def test_constants(self):
+        lexer = lexer_factory((terminals[Grammar.LBR], ('[',), {}),)
+        lexer.lexer.input('[')
+
+        self.assertEqual(get_tokens(lexer), [('LBR', '[')])
+
+        lexer = lexer_factory((terminals[Grammar.RBR], (']',), {}),)
+        lexer.lexer.input(']')
+
+        self.assertEqual(get_tokens(lexer), [('RBR', ']')])
+        
+        lexer = lexer_factory((terminals[Grammar.LBR], ('['), {}),
+                              (terminals[Grammar.RBR], (']'), {}))
+        
+        lexer.lexer.input('[]')
+
+        self.assertEqual(get_tokens(lexer), [('LBR', '['), ('RBR', ']')])
+
+        lexer = lexer_factory((terminals[Grammar.LBR], (), {}),
+                              (terminals[Grammar.RBR], (), {}))
+        
+        lexer.lexer.input('[]')
+
+        self.assertEqual(get_tokens(lexer), [('LBR', '['), ('RBR', ']')])
+
+        lexer = lexer_factory((terminals[Grammar.LBR], ('('), {}),
+                              (terminals[Grammar.RBR], (')'), {}))
+        
+        lexer.lexer.input('()')
+
+        self.assertEqual(get_tokens(lexer), [('LBR', '('), ('RBR', ')')])
+
 if __name__ == '__main__':
     unittest.main(verbosity=2)

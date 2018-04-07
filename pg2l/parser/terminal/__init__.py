@@ -8,3 +8,4 @@
 #    Cédric Santran <santrancedric@gmail.com>
 from .letter import LetterLexer
 from .number import NumberLexer
+from .constant import LBRLexer, RBRLexer
