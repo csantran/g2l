@@ -15,39 +15,10 @@ from collections import OrderedDict
 
 
 class Leaf(object):
-    """
-    A simple terminal object that contains data
-
-    Parameters
-    ----------
-    data : \*\*dict
-        leaf data's in an unpacked :obj:`dict` or :obj:`list` of :obj:`(key,value)` pairs
-
-    Attributes
-    ----------
-
-    repr_string : formated string
-        class attribut, a formated string used by __repr__, '%s' is then replaced by the value returned by __str__
-
-    data : dict
-        the data dictionary of the leaf
-
-    parent : :obj:`BaseTree`
-        None if leaf is orphaned otherwise a BaseTree object
-
-    Examples
-    --------
-    A simple symbol 'A'
-
-    >>> x = Leaf(symbol='A')
-    >>> print(repr(x))
-    (LEAF {'symbol': 'A'})
-    """
     repr_string = '(LEAF %s)'
 
-    def __init__(self, **data):
+    def __init__(self):
         super().__init__()
-        self.data = data
         self.parent = None
 
     def __repr__(self):
@@ -69,14 +40,14 @@ class Leaf(object):
         str
             string representation of leaf data's
         """
-        return str(self.data)
+        return str(self)
 
     def __iter__(self):
         yield self
 
 
 class BaseTree(ABC, Leaf):
-    """Base class for trees
+    """Base class for non terminals
     """
     @property
     @abstractmethod
@@ -123,7 +94,7 @@ class KTree(BaseTree):
     repr_string = '(KTREE %s)'
 
     def __init__(self):
-        super().__init__(**dict())
+        super().__init__()
         self.__children =  []
 
     @property
@@ -143,24 +114,24 @@ class KTree(BaseTree):
 
         Parameters
         ----------
-        child : :obj:`BTree`
-            a btree instance
+        child : :obj:`Leaf`
+            a Leaf instance
 
         Raises
         ------
         AssertionError
            if child is not orphaned and its parent is not set to None
         TypeError
-           if child is not a :obj:`BTree` instance
+           if child is not a :obj:`Leaf` instance
         """
-        if not isinstance(child, BTree):
+        if not isinstance(child, Leaf):
             raise TypeError('child wrong type %s, try to push it in %s' % (child, self))
 
         if child.parent is not None:
             raise AssertionError('child %s is not orphaned, parent %s' % (child, child.parent))
 
         child.parent = self
-        self.__children.append(children)
+        self.__children.append(child)
 
 class BTreeLeft(object):
     """Base class for left object in a :obj:`BTree`"""
@@ -184,7 +155,7 @@ class BTree(BaseTree):
     repr_string = '(BTREE %s)'
 
     def __init__(self):
-        super().__init__(**dict())
+        super().__init__()
         self.__children =  OrderedDict((x,None)for x in (BTree.LEFT, BTree.RIGHT))
 
     @property
@@ -251,30 +222,3 @@ class BTree(BaseTree):
         child.parent = self
         self.__children[side] = child
 
-def copy(tree):
-    """Do a shallow copy of tree
-
-    Examples
-    --------
-    >>> x = Leaf(symbol='A')
-    >>> y = copy(x)
-    >>> print(y)
-    {'symbol': 'A'}
-
-    Parameters
-    ----------
-    tree: :obj:`tree`
-       a tree
-
-    Returns
-    -------
-    :obj:`tree`
-        orphaned shallow copy of a tree
-    """
-    t_copy = type(tree)(**tree.data)
-
-    if isinstance(tree, BaseTree):
-        for child in tree.children:
-            t_copy.push(copy(child))
-
-    return t_copy
