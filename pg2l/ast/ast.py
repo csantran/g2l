@@ -39,7 +39,7 @@ class Terminal(Leaf):
 
 class Symbol(Terminal, LeftOperand):
     """A symbol, a letter and some parameters"""
-    repr_string = '(Symbol %s)'
+    repr_string = '(SYM %s)'
 
     def __str__(self):
         return self.data['symbol']
@@ -47,12 +47,13 @@ class Symbol(Terminal, LeftOperand):
 class Empty(Symbol):
     """The empty symbol"""
     repr_string = '(ε%s)'
+
     def __init__(self, **kwargs):
         super().__init__(symbol='')
 
 class Jump(Terminal, LeftOperand):
     """A Jump, a number and some parameters"""
-    repr_string = '(Jump %s)'
+    repr_string = '(JMP %s)'
 
     def __str__(self):
         return str(self.data['jump'])
@@ -60,56 +61,48 @@ class Jump(Terminal, LeftOperand):
 # ************
 # Nonterminals
 # ************
-
+#
 # Nonterminals ast classes
 
-# *****
-# Atoms
-# *****
-
-class ATOM(Infix):
-    """Atom, base classe for :obj:`NODE` and a :obj:`MODULE`, basic element of a string"""
-    pass
-
-class NODE(ATOM):
+class BaseNode(Infix):
     """Node base class"""
     pass
 
-class MODULE(ATOM):
+class BaseModule(Infix):
     """Module base class"""
     def __str__(self):
         """String representation of a module"""
         return '[%s]' % super().__str__()
 
-class SYM(ATOM):
+class Node(BaseNode):
     """An atom with only a symbol on his left side"""
-    repr_string = '(SYM %s)'
+    repr_string = '(N %s)'
 
-class CSYM(Symbol):
+class JumpedNode(Node):
     """An atom with a symbol on the left and a round of jumps on his right side"""
-    repr_string = '(CSYM %s)'
+    repr_string = '(JN %s)'
 
-class MOD(MODULE):
+class Module(BaseModule):
     """An Atom with only a level on his left side"""
-    repr_string = '(MOD %s)'
+    repr_string = '(M %s)'
 
-class CMOD(MODULE):
+class JModule(Module):
     """An atom with a level on the left and a round of jump on the right side"""
-    repr_string = '(CMOD %s)'
+    repr_string = '(JM %s)'
 
     def __str__(self):
         """String representation of a connected module"""
         return '[%s]%s' % (self.left, self.right)
 
-class LEVEL(Container, LeftOperand):
+class Level(Container, LeftOperand):
     """A level,
     container for atoms, that is, it contains the nodes and modules of the same level"""
-    repr_string = '(LEVEL %s)'
+    repr_string = '(LVL %s)'
 
 class Round(Container, RightOperand):
     """A round,
     container for jumps"""
-    repr_string = '(Round %s)'
+    repr_string = '(RND %s)'
 
 # ******
 # String
@@ -178,7 +171,7 @@ class StringRightContext(ContextString):
     """Right-context seen from the point of view of the string representation"""
     pass
 
-class PRODUCTION(Infix):
+class BaseProduction(Infix):
     """Production rule base class,
     contains a rewriting rule on his left side
     """
@@ -187,21 +180,21 @@ class PRODUCTION(Infix):
         """rule getter"""
         return self.left
 
-class Identity(PRODUCTION):
+class Identity(BaseProduction):
     """Identity production where the successor is identical to the predecessor"""
     def __init__(self, predecessor):
         raise NotImplementedError()
 
-class G0L(PRODUCTION):
+class G0L(BaseProduction):
     """G0L,
     a context-free production rule"""
-    repr_string = '(CFP %s)'
+    repr_string = '(G0L %s)'
 
     def __str__(self):
         """String representation of a context-free production"""
         return '%s:%s' % (str(self.children[0]), str(self.children[1]))
 
-class G1LL(PRODUCTION):
+class G1LL(BaseProduction):
     """G1LL,
     a non context-free production rule with left-context"""
     repr_string = '(G1LL %s)'
@@ -215,7 +208,7 @@ class G1LL(PRODUCTION):
         """String representation of a G1LL production"""
         return '%s<%s:%s' % (str(self.children[2]), str(self.children[0]), str(self.children[1]))
 
-class G1LR(PRODUCTION):
+class G1LR(BaseProduction):
     """G1LR
     a non context-free production rule with right-context"""
     repr_string = '(G1LR %s)'
@@ -229,7 +222,7 @@ class G1LR(PRODUCTION):
         """String representation of a G1LR production"""
         return '%s>%s:%s' % (str(self.children[0]), str(self.children[2]), str(self.children[1]))
 
-class G2L(PRODUCTION):
+class G2L(BaseProduction):
     """G2L,
     a non context-free production rule with both left and right context"""
     repr_string = '(G2L %s)'
