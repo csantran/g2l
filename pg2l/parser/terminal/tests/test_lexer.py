@@ -44,24 +44,20 @@ class TestLexer(unittest.TestCase):
         lexer.lexer.input(']')
 
         self.assertEqual(get_tokens(lexer), [('RBR', ']')])
-        
         lexer = lexer_factory((terminals[Grammar.LBR], ('['), {}),
                               (terminals[Grammar.RBR], (']'), {}))
-        
         lexer.lexer.input('[]')
 
         self.assertEqual(get_tokens(lexer), [('LBR', '['), ('RBR', ']')])
 
         lexer = lexer_factory((terminals[Grammar.LBR], (), {}),
                               (terminals[Grammar.RBR], (), {}))
-        
         lexer.lexer.input('[]')
 
         self.assertEqual(get_tokens(lexer), [('LBR', '['), ('RBR', ']')])
 
         lexer = lexer_factory((terminals[Grammar.LBR], ('('), {}),
                               (terminals[Grammar.RBR], (')'), {}))
-        
         lexer.lexer.input('()')
 
         self.assertEqual(get_tokens(lexer), [('LBR', '('), ('RBR', ')')])

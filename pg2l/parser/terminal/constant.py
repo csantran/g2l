@@ -11,7 +11,6 @@ class Constant(BaseLexer, grammar.Terminal):
         self.constants += [constant]
         setattr(self, 't_%s' % grammar_constant, r'\%s' % constant)
 
-    
 @grammar.register('LBR')
 class LBRLexer(Constant):
     def __init__(self, constant=DEFAULT_LBR):

@@ -31,8 +31,6 @@ def lexer_factory(*params):
     params = [(BaseLexer, (), {})] + list([x for x in params if x])
     lexer_class = [x[0] for x in params]
 
-    print('LEX', lexer_class)
-    
     class _Lexer(*lexer_class[1:]):
         def __init__(self):
             for aclass, args, kwargs in params:
