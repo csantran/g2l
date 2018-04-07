@@ -6,7 +6,6 @@ class BaseLexer(object):
         self.variables = []
         self.constants = []
         self.operators = []
-        pass
 
     @property
     def alphabet(self): return frozenset(set(self.variables) | set(self.constants))
@@ -29,15 +28,12 @@ class BaseLexer(object):
         return self
 
 def lexer_factory(*params):
-    print('PARAM', params)
     params = [(BaseLexer, (), {})] + list([x for x in params if x])
     lexer_class = [x[0] for x in params]
 
     class _Lexer(*lexer_class):
         def __init__(self):
             for aclass, args, kwargs in params:
-                print('init', aclass, args, kwargs)
-                
                 aclass.__init__(self, *args, **kwargs)
 
     return _Lexer().build()

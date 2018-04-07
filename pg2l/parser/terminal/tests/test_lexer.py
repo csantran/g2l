@@ -1,7 +1,7 @@
 # -*- coding : utf-8 -*-
 import unittest
 
-from pg2l.grammar import Grammar, lexers
+from pg2l.grammar import Grammar, terminals
 from pg2l.parser.terminal.base import lexer_factory
 
 
@@ -17,10 +17,7 @@ def get_tokens(lexer):
 
 class TestLexer(unittest.TestCase):
     def test_letter(self):
-        print(Grammar.LETTER)
-        print(lexers)
-
-        lexer = lexer_factory((lexers[Grammar.LETTER], ('ABCD',), {}),)
+        lexer = lexer_factory((terminals[Grammar.LETTER], ('ABCD',), {}),)
         lexer.lexer.input('A')
 
         self.assertEqual(get_tokens(lexer), [('LETTER', 'A')])
@@ -28,6 +25,14 @@ class TestLexer(unittest.TestCase):
         lexer.lexer.input('Z')
         self.assertEqual(get_tokens(lexer), [])
 
+    def test_number(self):
+        lexer = lexer_factory((terminals[Grammar.NUMBER], (-1,0,1), {}),)
+        lexer.lexer.input('10-1')
+
+        self.assertEqual(get_tokens(lexer), [('NUMBER', 1), ('NUMBER', 0), ('NUMBER', -1)])
+
+        lexer.lexer.input('2')
+        self.assertEqual(get_tokens(lexer), [])
 
 if __name__ == '__main__':
     unittest.main(verbosity=2)

@@ -21,7 +21,7 @@ from .base import BaseTree
 Terminals
 *********
 
-Terminals ast classes 
+Terminals ast classes
 """
 
 class Terminal(Leaf):
@@ -105,12 +105,12 @@ class CMOD(MODULE):
         return '[%s]%s' % (self.left, self.right)
 
 class LEVEL(Container, LeftOperand):
-    """A level, 
+    """A level,
     container for atoms, that is, it contains the nodes and modules of the same level"""
     repr_string = '(LEVEL %s)'
 
 class Round(Container, RightOperand):
-    """A round, 
+    """A round,
     container for jumps"""
     repr_string = '(Round %s)'
 
@@ -124,7 +124,7 @@ class String(Container):
     """A string, a word of the language, a set of atoms
     """
     rep_string = '(STRING %s)'
-    
+
 """
 ****************
 Production rules
@@ -142,8 +142,8 @@ class Successor(String, RightOperand):
     pass
 
 class Rule(Infix, LeftOperand):
-    """Rule, 
-    the rewriting rule composed of the predecessor on the left 
+    """Rule,
+    the rewriting rule composed of the predecessor on the left
     and the successor on the right
     """
     @property
@@ -223,8 +223,6 @@ class G1LL(PRODUCTION):
     def __str__(self):
         """String representation of a G1LL production"""
         return '%s<%s:%s' % (str(self.children[2]), str(self.children[0]), str(self.children[1]))
-
-    pass
 
 class G1LR(PRODUCTION):
     """G1LR
