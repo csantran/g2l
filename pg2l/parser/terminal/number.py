@@ -15,10 +15,7 @@ class NumberLexer(BaseLexer, grammar.Terminal):
         self.tokens += [grammar.Grammar.NUMBER]
         self.variables += [str(x) for x in numbers]
         numbers = [str(x) for x in numbers]
-
-        pattern =  r'|'.join(['%s' % i for i in numbers])
-
-        NumberLexer.t_NUMBER.__doc__ = pattern % numbers # TODO, % numbers ???
+        NumberLexer.t_NUMBER.__doc__ = r'|'.join(['%s' % i for i in numbers])
 
     def t_NUMBER(self, t):
         t.value = int(t.value)
