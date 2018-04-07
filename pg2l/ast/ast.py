@@ -21,8 +21,7 @@ from .base import BaseTree
 Terminals
 *********
 
-Terminals ast classes
-"""
+Terminals ast classes"""
 
 class Terminal(Leaf):
     """

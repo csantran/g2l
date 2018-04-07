@@ -26,7 +26,7 @@ def register(element):
 
         if hasattr(Grammar, element):
             raise AttributeError(element)
-        
+
         setattr(Grammar, element, element)
 
         if Terminal in bases:

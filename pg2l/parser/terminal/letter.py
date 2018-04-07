@@ -16,5 +16,5 @@ class LetterLexer(grammar.Terminal):
 
         self.tokens += [grammar.Grammar.LETTER]
         self.variables += list(letters)
-        
+
         self.t_LETTER = r'[%s]' % letters
