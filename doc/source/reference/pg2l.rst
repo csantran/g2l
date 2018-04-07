@@ -10,6 +10,18 @@ Subpackages
     pg2l.lsys
     pg2l.parser
 
+Submodules
+----------
+
+pg2l.grammar module
+-------------------
+
+.. automodule:: pg2l.grammar
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+
 Module contents
 ---------------
 

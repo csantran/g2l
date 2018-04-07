@@ -20,6 +20,14 @@ pg2l.ast.base module
     :undoc-members:
     :show-inheritance:
 
+pg2l.ast.concatenation module
+-----------------------------
+
+.. automodule:: pg2l.ast.concatenation
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 
 Module contents
 ---------------
