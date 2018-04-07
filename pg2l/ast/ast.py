@@ -16,12 +16,12 @@ from .base import BTreeRight as RightOperand
 from .base import KTree as Container
 from .base import BaseTree
 
-"""
-*********
-Terminals
-*********
 
-Terminals ast classes"""
+# *********
+# Terminals
+# *********
+
+# Terminals ast classes
 
 class Terminal(Leaf):
     """
@@ -57,17 +57,15 @@ class Jump(Terminal, LeftOperand):
     def __str__(self):
         return str(self.data['jump'])
 
-"""
-************
-Nonterminals
-************
+# ************
+# Nonterminals
+# ************
 
-Nonterminals ast classes
+# Nonterminals ast classes
 
-*****
-Atoms
-*****
-"""
+# *****
+# Atoms
+# *****
 
 class ATOM(Infix):
     """Atom, base classe for :obj:`NODE` and a :obj:`MODULE`, basic element of a string"""
@@ -113,22 +111,18 @@ class Round(Container, RightOperand):
     container for jumps"""
     repr_string = '(Round %s)'
 
-"""
-******
-String
-******
-"""
+# ******
+# String
+# ******
 
 class String(Container):
     """A string, a word of the language, a set of atoms
     """
     rep_string = '(STRING %s)'
 
-"""
-****************
-Production rules
-****************
-"""
+# ****************
+# Production rules
+# ****************
 
 class Predecessor(String, LeftOperand):
     """Predecessor,
@@ -155,11 +149,9 @@ class Rule(Infix, LeftOperand):
         """successor getter"""
         return self.right
 
-"""
-*******
-Context
-*******
-"""
+# *******
+# Context
+# *******
 
 class Contexts(Container, RightOperand):
     """Context of a production rule,
