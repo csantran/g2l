@@ -66,5 +66,39 @@ class TestLexer(unittest.TestCase):
 
         self.assertEqual(get_tokens(lexer), [('LBR', '('), ('RBR', ')')])
 
+    def test_operator(self):
+        lexer = lexer_factory(
+            (terminals[Grammar.OP_REWRITE], (), {}),
+            (terminals[Grammar.OP_GLCONTEXT], (), {}),
+            (terminals[Grammar.OP_GRCONTEXT], (), {}),
+            (terminals[Grammar.OP_SLCONTEXT], (), {}),
+            (terminals[Grammar.OP_SRCONTEXT], (), {})
+            )
+
+        lexer.lexer.input(':<>{}')
+        self.assertEqual(get_tokens(lexer), [
+            ('OP_REWRITE', ':'),
+            ('OP_GLCONTEXT', '<'),
+            ('OP_GRCONTEXT', '>'),
+            ('OP_SLCONTEXT', '{'),
+            ('OP_SRCONTEXT', '}')
+            ])
+
+        lexer = lexer_factory(
+            (terminals[Grammar.OP_REWRITE], ('⇒'), {}),
+            (terminals[Grammar.OP_GLCONTEXT], ('↢'), {}),
+            (terminals[Grammar.OP_GRCONTEXT], ('↣'), {}),
+            (terminals[Grammar.OP_SLCONTEXT], ('↤'), {}),
+            (terminals[Grammar.OP_SRCONTEXT], ('↦'), {})
+            )
+
+        lexer.lexer.input('⇒↢↣↤↦')
+        self.assertEqual(get_tokens(lexer), [
+            ('OP_REWRITE', '⇒'),
+            ('OP_GLCONTEXT', '↢'),
+            ('OP_GRCONTEXT', '↣'),
+            ('OP_SLCONTEXT', '↤'),
+            ('OP_SRCONTEXT', '↦')])
+
 if __name__ == '__main__':
     unittest.main(verbosity=2)
