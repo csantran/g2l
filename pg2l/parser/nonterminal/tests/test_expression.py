@@ -25,7 +25,7 @@ class TestLexer(unittest.TestCase):
         lexer.lexer.input('A1[BB]')
 
         parser = mixin_builder(
-            BaseParser,
+            (BaseParser, (), {}),
             (nonterminals[G.expression], (), {}),
             (nonterminals[G.node], (), {}),)
 

@@ -74,13 +74,10 @@ def register_with_nonterminal(nterm):
 
     return __register
 
-def mixin_builder(base, *params):
-    params = [(base, (), {})] + list([x for x in params if x])
-    mro = [x[0] for x in params]
-
-    class Mixin(*mro):
+def mixin_builder(*mro):
+    class Mixin(*list(zip(*mro))[0]):
         def __init__(self):
-            for cls, args, kwargs in params:
+            for cls, args, kwargs in mro:
                 cls.__init__(self, *args, **kwargs)
 
     return Mixin()
