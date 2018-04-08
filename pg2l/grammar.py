@@ -20,22 +20,28 @@ class Grammar(object):
 terminals = {}
 nonterminals = {}
 
-def register(element):
-    def __register_element_with(this_cls):
-        bases = inspect.getmro(this_cls)
+def register(element, *others):
 
-        if hasattr(Grammar, element):
-            raise AttributeError(element)
+    def __register_element_with(this_cls=None):
+        if this_cls:
+            bases = inspect.getmro(this_cls)
 
-        setattr(Grammar, element, element)
-
-        if Terminal in bases:
-            terminals[element] = this_cls
-        elif NonTerminal in bases:
-            nonterminals[element] = this_cls
-        else:
-            raise TypeError(this_cls)
+            if Terminal in bases:
+                terminals[element] = this_cls
+            elif NonTerminal in bases:
+                nonterminals[element] = this_cls
+            else:
+                raise TypeError(this_cls)
 
         return this_cls
 
+    if hasattr(Grammar, element):
+        raise AttributeError(element)
+
+    setattr(Grammar, element, element)
+
+    for o in others:
+        setattr(Grammar, o, o)
+
     return __register_element_with
+
