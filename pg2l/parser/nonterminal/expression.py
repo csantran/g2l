@@ -39,7 +39,6 @@ grammar.register('expression', 'axiom', 'level')()
 @register_with_nonterminal(G.expression)
 class ExpressionParser(AbstractParserMixin):
 
-    
     @staticmethod
     @docstring_production(G.expression, G.axiom)
     def p_expression_axiom(p):
