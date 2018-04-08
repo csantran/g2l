@@ -82,7 +82,7 @@ class BaseTree(ABC, Leaf):
             all nodes of a tree in deep first pre-order
         """
         yield self
-        for child in list(self.children): # TODO remove list casting
+        for child in self.children:
             if child:
                 yield from child
 
@@ -95,7 +95,7 @@ class KTree(BaseTree):
 
     def __init__(self):
         super().__init__()
-        self.__children =  []
+        self.__children = []
 
     @property
     def children(self):
@@ -156,7 +156,7 @@ class BTree(BaseTree):
 
     def __init__(self):
         super().__init__()
-        self.__children =  OrderedDict((x,None)for x in (BTree.LEFT, BTree.RIGHT))
+        self.__children = OrderedDict((x, None) for x in (BTree.LEFT, BTree.RIGHT))
 
     @property
     def children(self):
@@ -196,7 +196,8 @@ class BTree(BaseTree):
         Parameters
         ----------
         child : :obj:`Leaf`
-            a child, must be a :obj:`Leaf` or a :obj:`KTree` instance and a sub class of :obj:`BTreeLeft` or :obj:`BTreeRight`
+            a child, must be a :obj:`Leaf` or a :obj:`KTree` instance
+            and a sub class of :obj:`BTreeLeft` or :obj:`BTreeRight`
 
         Raises
         ------

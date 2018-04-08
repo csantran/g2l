@@ -10,6 +10,7 @@ import ply.lex as lex
 
 class BaseLexer(object):
     def __init__(self):
+        self.lexer = None
         self.tokens = []
         self.variables = []
         self.constants = []

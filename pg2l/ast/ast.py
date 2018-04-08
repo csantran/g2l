@@ -39,7 +39,7 @@ class Terminal(Leaf):
 
 class Symbol(Terminal):
     """A symbol, matching symbol of the L-system, can be a letter or a number"""
-    
+
 class Letter(Symbol, LeftOperand):
     """A letter and some parameters"""
     repr_string = '(LTR %s)'
@@ -95,7 +95,7 @@ class JModule(Module):
         """String representation of a connected module"""
         return '[%s]%s' % (self.left, self.right)
 
-class Level(Symbol, Container, LeftOperand):
+class Level(Container, LeftOperand):
     """A level,
     container for atoms, that is, it contains the nodes and modules of the same level"""
     repr_string = '(LVL %s)'

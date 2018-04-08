@@ -1,7 +1,6 @@
 from abc import ABC
 
-from inspect import ismethod, getmro, isfunction
-import re
+from inspect import ismethod, getmro
 
 import ply.yacc as yacc
 
@@ -23,7 +22,7 @@ class BaseParser(AbstractParserMixin):
 
     def parse(self, string):
         return self.parser.parse(string)
-    
+
     def p_error(self, p):
         if p:
             print("Syntax error at token", p.type)
@@ -34,7 +33,7 @@ class BaseParser(AbstractParserMixin):
 
     def __repr__(self):
         repr_string = []
-        
+
         for name in dir(self):
             if name.startswith('p_') and name not in ('p_error', '__init__'):
                 method = getattr(self, name)
@@ -42,7 +41,7 @@ class BaseParser(AbstractParserMixin):
                     repr_string.append('\n#from %s.%s' % (
                         get_class_that_defined(method),
                         method.__name__))
-                    
+
                     for line in [l.strip() for l in method.__doc__.split('\n')]:
                         if line:
                             repr_string.append((line.startswith('|') and '\t%s' or '%s') % line)
