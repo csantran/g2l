@@ -19,7 +19,8 @@ class BaseLexer(object):
     @property
     def alphabet(self): return frozenset(set(self.variables) | set(self.constants))
 
-    def t_error(self, t):
+    @staticmethod
+    def t_error(t):
         print("warning:g2l.lexer: error, illegal character '%s'" % t.value[0])
         t.lexer.skip(1)
 

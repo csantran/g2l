@@ -17,6 +17,7 @@ class NumberLexer(BaseLexer, grammar.Terminal):
         numbers = [str(x) for x in numbers]
         NumberLexer.t_NUMBER.__doc__ = r'|'.join(['%s' % i for i in numbers])
 
-    def t_NUMBER(self, t):
+    @staticmethod
+    def t_NUMBER(t):
         t.value = int(t.value)
         return t
