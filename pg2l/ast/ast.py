@@ -37,21 +37,24 @@ class Terminal(Leaf):
         super().__init__()
         self.data = kwargs
 
-class Symbol(Terminal, LeftOperand):
-    """A symbol, a letter and some parameters"""
-    repr_string = '(SYM %s)'
+class Symbol(Terminal):
+    """A symbol, matching symbol of the L-system, can be a letter or a number"""
+    
+class Letter(Symbol, LeftOperand):
+    """A letter and some parameters"""
+    repr_string = '(LTR %s)'
 
     def __str__(self):
         return self.data['symbol']
 
-class Empty(Symbol):
+class Empty(Letter):
     """The empty symbol"""
     repr_string = '(ε%s)'
 
     def __init__(self, **kwargs):
         super().__init__(symbol='')
 
-class Jump(Terminal, LeftOperand):
+class Jump(Symbol, LeftOperand):
     """A Jump, a number and some parameters"""
     repr_string = '(JMP %s)'
 
@@ -65,36 +68,34 @@ class Jump(Terminal, LeftOperand):
 # Nonterminals ast classes
 
 class BaseNode(Infix):
-    """Node base class"""
+    """Node base class, contains symbols"""
     pass
 
-class BaseModule(Infix):
-    """Module base class"""
+class Node(BaseNode):
+    """An node with only a letter symbol on his left side"""
+    repr_string = '(N %s)'
+
+class JumpedNode(Node):
+    """An node with a letter symbol on the left and a round of jump symbols on his right side"""
+    repr_string = '(JN %s)'
+
+class Module(BaseNode):
+    """An module with only a level (a level is also a symbol) on his left side"""
+    repr_string = '(M %s)'
+
     def __str__(self):
         """String representation of a module"""
         return '[%s]' % super().__str__()
 
-class Node(BaseNode):
-    """An atom with only a symbol on his left side"""
-    repr_string = '(N %s)'
-
-class JumpedNode(Node):
-    """An atom with a symbol on the left and a round of jumps on his right side"""
-    repr_string = '(JN %s)'
-
-class Module(BaseModule):
-    """An Atom with only a level on his left side"""
-    repr_string = '(M %s)'
-
 class JModule(Module):
-    """An atom with a level on the left and a round of jump on the right side"""
+    """An module with a level on the left and a round of jump on the right side"""
     repr_string = '(JM %s)'
 
     def __str__(self):
         """String representation of a connected module"""
         return '[%s]%s' % (self.left, self.right)
 
-class Level(Container, LeftOperand):
+class Level(Symbol, Container, LeftOperand):
     """A level,
     container for atoms, that is, it contains the nodes and modules of the same level"""
     repr_string = '(LVL %s)'
@@ -112,6 +113,10 @@ class String(Container):
     """A string, a word of the language, a set of atoms
     """
     rep_string = '(STRING %s)'
+
+class Axiom(String):
+    """An axiom"""
+    repr_string = '(AXIOM %s)'
 
 # ****************
 # Production rules
