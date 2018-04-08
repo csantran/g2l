@@ -4,7 +4,6 @@ import unittest
 from pg2l.grammar import Grammar as G, terminals
 from pg2l.parser.terminal.base import lexer_factory
 from pg2l.parser.nonterminal.base import mixin_builder, nonterminals, BaseParser
-from pg2l.parser.nonterminal import expression
 
 def get_tokens(lexer):
     toks = []
