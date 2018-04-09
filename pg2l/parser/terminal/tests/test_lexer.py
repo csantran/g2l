@@ -2,8 +2,8 @@
 import unittest
 
 from pg2l.grammar import Grammar, terminals
-from pg2l.parser.terminal.base import lexer_factory
-
+from pg2l.parser.mixin import mixin
+from pg2l.parser.terminal.base import BaseLexer
 
 def get_tokens(lexer):
     toks = []
@@ -17,7 +17,10 @@ def get_tokens(lexer):
 
 class TestLexer(unittest.TestCase):
     def test_letter(self):
-        lexer = lexer_factory((terminals[Grammar.LETTER], ('ABCD',), {}),)
+        lexer = mixin('LexerMixin',
+            (BaseLexer, (), {}),
+            (terminals[Grammar.LETTER], ('ABCD',), {}),)
+        lexer.build()
         lexer.lexer.input('A')
 
         self.assertEqual(get_tokens(lexer), [('LETTER', 'A')])
@@ -26,7 +29,11 @@ class TestLexer(unittest.TestCase):
         self.assertEqual(get_tokens(lexer), [])
 
     def test_number(self):
-        lexer = lexer_factory((terminals[Grammar.NUMBER], (-1,0,1), {}),)
+        lexer = mixin('LexerMixin',
+                          (BaseLexer, (), {}),
+                          (terminals[Grammar.NUMBER], (-1,0,1), {}),)
+
+        lexer.build()
         lexer.lexer.input('10-1')
 
         self.assertEqual(get_tokens(lexer), [('NUMBER', 1), ('NUMBER', 0), ('NUMBER', -1)])
@@ -35,35 +42,54 @@ class TestLexer(unittest.TestCase):
         self.assertEqual(get_tokens(lexer), [])
 
     def test_constants(self):
-        lexer = lexer_factory((terminals[Grammar.LBR], ('[',), {}),)
+        lexer = mixin('LexerMixin',
+                          (BaseLexer, (), {}),
+                          (terminals[Grammar.LBR], ('[',), {}),)
+
+        lexer.build()
         lexer.lexer.input('[')
 
         self.assertEqual(get_tokens(lexer), [('LBR', '[')])
 
-        lexer = lexer_factory((terminals[Grammar.RBR], (']',), {}),)
+        lexer = mixin('LexerMixin',
+                          (BaseLexer, (), {}),
+                          (terminals[Grammar.RBR], (']',), {}),)
+        lexer.build()
         lexer.lexer.input(']')
 
         self.assertEqual(get_tokens(lexer), [('RBR', ']')])
-        lexer = lexer_factory((terminals[Grammar.LBR], ('['), {}),
-                              (terminals[Grammar.RBR], (']'), {}))
+        lexer = mixin('LexerMixin',
+                          (BaseLexer, (), {}),
+                          (terminals[Grammar.LBR], ('['), {}),
+                          (terminals[Grammar.RBR], (']'), {}))
+        lexer.build()
         lexer.lexer.input('[]')
 
         self.assertEqual(get_tokens(lexer), [('LBR', '['), ('RBR', ']')])
 
-        lexer = lexer_factory((terminals[Grammar.LBR], (), {}),
-                              (terminals[Grammar.RBR], (), {}))
+        lexer = mixin('LexerMixin',
+                          (BaseLexer, (), {}),
+                          (terminals[Grammar.LBR], (), {}),
+                          (terminals[Grammar.RBR], (), {}))
+        
+        lexer.build()
         lexer.lexer.input('[]')
 
         self.assertEqual(get_tokens(lexer), [('LBR', '['), ('RBR', ']')])
 
-        lexer = lexer_factory((terminals[Grammar.LBR], ('('), {}),
-                              (terminals[Grammar.RBR], (')'), {}))
+        lexer = mixin('LexerMixin',
+                          (BaseLexer, (), {}),
+                          (terminals[Grammar.LBR], ('('), {}),
+                          (terminals[Grammar.RBR], (')'), {}))
+        
+        lexer.build()
         lexer.lexer.input('()')
 
         self.assertEqual(get_tokens(lexer), [('LBR', '('), ('RBR', ')')])
 
     def test_operator(self):
-        lexer = lexer_factory(
+        lexer = mixin('LexerMixin',
+            (BaseLexer, (), {}),
             (terminals[Grammar.OP_REWRITE], (), {}),
             (terminals[Grammar.OP_GLCONTEXT], (), {}),
             (terminals[Grammar.OP_GRCONTEXT], (), {}),
@@ -71,6 +97,7 @@ class TestLexer(unittest.TestCase):
             (terminals[Grammar.OP_SRCONTEXT], (), {})
             )
 
+        lexer.build()
         lexer.lexer.input(':<>{}')
         self.assertEqual(get_tokens(lexer), [
             ('OP_REWRITE', ':'),
@@ -80,7 +107,8 @@ class TestLexer(unittest.TestCase):
             ('OP_SRCONTEXT', '}')
             ])
 
-        lexer = lexer_factory(
+        lexer = mixin('LexerMixin',
+            (BaseLexer, (), {}),
             (terminals[Grammar.OP_REWRITE], ('⇒'), {}),
             (terminals[Grammar.OP_GLCONTEXT], ('↢'), {}),
             (terminals[Grammar.OP_GRCONTEXT], ('↣'), {}),
@@ -88,6 +116,7 @@ class TestLexer(unittest.TestCase):
             (terminals[Grammar.OP_SRCONTEXT], ('↦'), {})
             )
 
+        lexer.build()
         lexer.lexer.input('⇒↢↣↤↦')
         self.assertEqual(get_tokens(lexer), [
             ('OP_REWRITE', '⇒'),

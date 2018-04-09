@@ -7,13 +7,14 @@
 # Authors:
 #    Cédric Santran <santrancedric@gmail.com>
 from pg2l import grammar
-from .base import BaseLexer
+from pg2l.parser.mixin import mixin
+from .base import LexerMixin
 
 DEFAULT_LBR = '['
 DEFAULT_RBR = ']'
 
 
-class Constant(BaseLexer, grammar.Terminal):
+class Constant(LexerMixin, grammar.Terminal):
     def __init__(self, constant, grammar_constant):
         self.tokens += [grammar_constant]
         self.constants += [constant]

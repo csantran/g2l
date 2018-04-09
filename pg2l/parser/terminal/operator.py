@@ -6,7 +6,7 @@
 #
 # Authors:
 #    Cédric Santran <santrancedric@gmail.com>
-from .base import BaseLexer
+from .base import LexerMixin
 from pg2l import grammar
 
 DEFAULT_OP_REWRITE = ':'   # rewrite operator
@@ -15,7 +15,7 @@ DEFAULT_OP_GRCONTEXT = '>' # graph right-context operator
 DEFAULT_OP_SLCONTEXT = '{' # string left-context operator
 DEFAULT_OP_SRCONTEXT = '}' # string right-context operator
 
-class Operator(BaseLexer, grammar.Terminal):
+class Operator(LexerMixin, grammar.Terminal):
     def __init__(self, operator, grammar_operator):
         self.tokens.append(grammar_operator)
         self.operators.append(operator)

@@ -6,11 +6,11 @@
 #
 # Authors:
 #    Cédric Santran <santrancedric@gmail.com>
-from .base import BaseLexer
+from .base import LexerMixin
 from pg2l import grammar
 
 @grammar.register('LETTER')
-class LetterLexer(BaseLexer, grammar.Terminal):
+class LetterLexer(LexerMixin, grammar.Terminal):
     def __init__(self, letters):
         if not isinstance(letters, str):
             raise TypeError(letters)

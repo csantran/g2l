@@ -8,7 +8,12 @@
 #    Cédric Santran <santrancedric@gmail.com>
 import ply.lex as lex
 
-class BaseLexer(object):
+from pg2l.parser.mixin import mixin, AbstractMixin
+
+class LexerMixin(AbstractMixin):
+    pass
+
+class BaseLexer(LexerMixin):
     def __init__(self):
         self.lexer = None
         self.tokens = []
@@ -37,14 +42,14 @@ class BaseLexer(object):
         self.lexer = lex.lex(module=self)
         return self
 
-def lexer_factory(*params):
-    params = [(BaseLexer, (), {})] + list([x for x in params if x])
-    lexer_class = [x[0] for x in params]
+# def lexer_factory(*params):
+#     params = [(BaseLexer, (), {})] + list([x for x in params if x])
+#     lexer_class = [x[0] for x in params]
 
-    class _Lexer(*lexer_class[1:]):
-        def __init__(self):
-            for aclass, args, kwargs in params:
-                print('params', aclass, args, kwargs)
-                aclass.__init__(self, *args, **kwargs)
+#     class _Lexer(*lexer_class[1:]):
+#         def __init__(self):
+#             for aclass, args, kwargs in params:
+#                 print('params', aclass, args, kwargs)
+#                 aclass.__init__(self, *args, **kwargs)
 
-    return _Lexer().build()
+#     return _Lexer().build()

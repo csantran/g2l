@@ -6,11 +6,11 @@
 #
 # Authors:
 #    Cédric Santran <santrancedric@gmail.com>
-from .base import BaseLexer
+from .base import LexerMixin
 from pg2l import grammar
 
 @grammar.register('NUMBER')
-class NumberLexer(BaseLexer, grammar.Terminal):
+class NumberLexer(LexerMixin, grammar.Terminal):
     def __init__(self, *numbers):
         self.tokens += [grammar.Grammar.NUMBER]
         self.variables += [str(x) for x in numbers]

@@ -2,8 +2,8 @@
 import unittest
 
 from pg2l.grammar import Grammar as G, terminals
-from pg2l.parser.terminal.base import lexer_factory
 from pg2l.parser.nonterminal.base import nonterminals, BaseParser
+from pg2l.parser.terminal.base import BaseLexer
 from pg2l.parser.mixin import mixin
 
 
@@ -19,11 +19,14 @@ def get_tokens(lexer):
 
 class TestLexer(unittest.TestCase):
     def test_letter(self):
-        lexer = lexer_factory((terminals[G.LETTER], ('ABCD',), {}),
+        lexer = mixin('LexerMixin',
+                          (BaseLexer, (), {}),
+                          (terminals[G.LETTER], ('ABCD',), {}),
                               (terminals[G.NUMBER], (-1,0,1), {}),
                               (terminals[G.LBR], ('[',), {}),
                               (terminals[G.RBR], (']',), {})
                                   )
+        lexer.build()
         lexer.lexer.input('A1[BB]')
 
         parser = mixin('MixinParser',
