@@ -6,7 +6,6 @@
 #
 # Authors:
 #    Cédric Santran <santrancedric@gmail.com>
-from .grammar import Grammar as G
 
 def builder(*args):
     """Build the parser from args

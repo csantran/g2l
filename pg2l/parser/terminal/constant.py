@@ -7,7 +7,6 @@
 # Authors:
 #    Cédric Santran <santrancedric@gmail.com>
 from pg2l import grammar
-from pg2l.parser.mixin import mixin
 from .base import LexerMixin
 
 DEFAULT_LBR = '['

@@ -71,7 +71,7 @@ class TestLexer(unittest.TestCase):
                           (BaseLexer, (), {}),
                           (terminals[Grammar.LBR], (), {}),
                           (terminals[Grammar.RBR], (), {}))
-        
+
         lexer.build()
         lexer.lexer.input('[]')
 

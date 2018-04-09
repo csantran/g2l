@@ -8,7 +8,7 @@
 #    Cédric Santran <santrancedric@gmail.com>
 import ply.lex as lex
 
-from pg2l.parser.mixin import mixin, AbstractMixin
+from pg2l.parser.mixin import AbstractMixin
 
 class LexerMixin(AbstractMixin):
     pass
