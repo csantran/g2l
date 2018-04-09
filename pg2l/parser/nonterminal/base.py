@@ -6,14 +6,13 @@
 #
 # Authors:
 #    Cédric Santran <santrancedric@gmail.com>
-from abc import ABC
-
 from inspect import ismethod, getmro
-
 import ply.yacc as yacc
 
+from pg2l.parser.mixin import AbstractMixin
 
-class AbstractParserMixin(ABC):
+
+class ParserMixin(AbstractMixin):
     """Mixin"""
 
 def get_class_that_defined(method):
@@ -21,7 +20,7 @@ def get_class_that_defined(method):
         if cls.__dict__.get(method.__name__):
             return cls
 
-class BaseParser(AbstractParserMixin):
+class BaseParser(ParserMixin):
     def __init__(self, debug=False):
         self.lexer = None
         self.tokens = None
@@ -81,13 +80,3 @@ def register_with_nonterminal(nterm):
         return cls
 
     return __register
-
-def mixin_builder(*mro):
-
-    class Mixin(*list(zip(*mro))[0]):
-        def __init__(self):
-            for cls, args, kwargs in mro:
-                cls.__init__(self, *args, **kwargs)
-
-    return Mixin()
-

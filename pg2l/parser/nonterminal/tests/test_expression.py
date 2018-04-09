@@ -3,7 +3,9 @@ import unittest
 
 from pg2l.grammar import Grammar as G, terminals
 from pg2l.parser.terminal.base import lexer_factory
-from pg2l.parser.nonterminal.base import mixin_builder, nonterminals, BaseParser
+from pg2l.parser.nonterminal.base import nonterminals, BaseParser
+from pg2l.parser.mixin import mixin
+
 
 def get_tokens(lexer):
     toks = []
@@ -24,13 +26,15 @@ class TestLexer(unittest.TestCase):
                                   )
         lexer.lexer.input('A1[BB]')
 
-        parser = mixin_builder(
+        parser = mixin('MixinParser',
             (BaseParser, (), {}),
             (nonterminals[G.expression], (), {}),
             (nonterminals[G.node], (), {}),)
 
         parser.build(lexer)
         self.assertEqual(repr(parser.parse('ABCD')), '(AXIOM ABCD)')
+        self.assertEqual(str(type(parser)), "<class 'pg2l.parser.mixin.MixinParser'>")
+        self.assertIsInstance(parser, BaseParser)
 
 if __name__ == '__main__':
     unittest.main(verbosity=2)
