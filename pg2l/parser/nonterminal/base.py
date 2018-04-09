@@ -1,3 +1,11 @@
+# -*- coding : utf-8 -*-
+#    Copyright (C) 2018 by
+#    Cédric Santran <santrancedric@gmail.com>
+#    All rights reserved.
+#    BSD license.
+#
+# Authors:
+#    Cédric Santran <santrancedric@gmail.com>
 from abc import ABC
 
 from inspect import ismethod, getmro
@@ -75,6 +83,7 @@ def register_with_nonterminal(nterm):
     return __register
 
 def mixin_builder(*mro):
+
     class Mixin(*list(zip(*mro))[0]):
         def __init__(self):
             for cls, args, kwargs in mro:

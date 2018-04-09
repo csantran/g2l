@@ -1,10 +1,18 @@
+# -*- coding : utf-8 -*-
+#    Copyright (C) 2018 by
+#    Cédric Santran <santrancedric@gmail.com>
+#    All rights reserved.
+#    BSD license.
+#
+# Authors:
+#    Cédric Santran <santrancedric@gmail.com>
 from .base import AbstractParserMixin, docstring_production, register_with_nonterminal
 
 from pg2l import ast
 from pg2l import grammar
 from pg2l.grammar import Grammar as G
 
-grammar.register('basenode', 'node', 'symbol', 'letter')()
+grammar.register('basenode', 'node', 'letter')()
 
 @register_with_nonterminal(G.node)
 class NodeParser(AbstractParserMixin):
