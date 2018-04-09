@@ -17,13 +17,13 @@ def builder(*args):
 
     # >>> p = builder(                              # simplified grammar :
     #         (G.LETTER, 'ABCDEF'),                 # LETTER := 'A'|'B'|'C'|'D'|'E'|'F'
-    #         (G.NUMBER, range(5)),                 # NUMBER := 0|1|2|3|4 
-    #         (G.LBR, '['),                         # LBR := '[' 
-    #         (G.RBR, ']'),                         # RBR := ']' 
+    #         (G.NUMBER, range(5)),                 # NUMBER := 0|1|2|3|4
+    #         (G.LBR, '['),                         # LBR := '['
+    #         (G.RBR, ']'),                         # RBR := ']'
     #         (G.OP_REWRITE, ':'),                  # OP_REWRITE := ':'
 
     #         (G.parametric, dict(                  # PARAMETRIC := 'α'|'β'
-    #             α = lambda x: x,                  
+    #             α = lambda x: x,
     #             β = lambda x: x)
     #             ),
 
