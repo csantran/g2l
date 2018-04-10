@@ -1,9 +1,9 @@
 # -*- coding : utf-8 -*-
 import unittest
 
-from pg2l.grammar import Grammar as G, terminals
+from pg2l.grammar import Grammar as G
 from pg2l.parser.nonterminal.base import nonterminals, BaseParser
-from pg2l.parser.terminal.base import BaseLexer
+from pg2l.parser.terminal.base import terminals, BaseLexer
 from pg2l.parser.mixin import mixin
 
 

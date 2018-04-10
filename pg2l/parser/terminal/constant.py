@@ -6,8 +6,11 @@
 #
 # Authors:
 #    Cédric Santran <santrancedric@gmail.com>
+from .base import LexerMixin, register_with_terminal
+
 from pg2l import grammar
-from .base import LexerMixin
+from pg2l.grammar import Grammar as G
+
 
 DEFAULT_LBR = '['
 DEFAULT_RBR = ']'
@@ -19,12 +22,12 @@ class Constant(LexerMixin, grammar.Terminal):
         self.constants += [constant]
         setattr(self, 't_%s' % grammar_constant, r'\%s' % constant)
 
-@grammar.register('LBR')
+@register_with_terminal(G.LBR)
 class LBRLexer(Constant):
     def __init__(self, constant=DEFAULT_LBR):
-        Constant.__init__(self, constant, grammar.Grammar.LBR)
+        Constant.__init__(self, constant, G.LBR)
 
-@grammar.register('RBR')
+@register_with_terminal(G.RBR)
 class RBRLexer(Constant):
     def __init__(self, constant=DEFAULT_RBR):
-        Constant.__init__(self, constant, grammar.Grammar.RBR)
+        Constant.__init__(self, constant, G.RBR)

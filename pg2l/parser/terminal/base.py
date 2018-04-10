@@ -8,10 +8,11 @@
 #    Cédric Santran <santrancedric@gmail.com>
 import ply.lex as lex
 
+from pg2l.parser.base import decorator_register_factory
 from pg2l.parser.mixin import AbstractMixin
 
 class LexerMixin(AbstractMixin):
-    pass
+    """Lexer Mixin base class"""
 
 class BaseLexer(LexerMixin):
     def __init__(self):
@@ -42,14 +43,6 @@ class BaseLexer(LexerMixin):
         self.lexer = lex.lex(module=self)
         return self
 
-# def lexer_factory(*params):
-#     params = [(BaseLexer, (), {})] + list([x for x in params if x])
-#     lexer_class = [x[0] for x in params]
+terminals = {}
 
-#     class _Lexer(*lexer_class[1:]):
-#         def __init__(self):
-#             for aclass, args, kwargs in params:
-#                 print('params', aclass, args, kwargs)
-#                 aclass.__init__(self, *args, **kwargs)
-
-#     return _Lexer().build()
+register_with_terminal = decorator_register_factory(terminals)

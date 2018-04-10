@@ -6,16 +6,19 @@
 #
 # Authors:
 #    Cédric Santran <santrancedric@gmail.com>
-from .base import LexerMixin
-from pg2l import grammar
+from .base import LexerMixin, register_with_terminal
 
-@grammar.register('LETTER')
+from pg2l import grammar
+from pg2l.grammar import Grammar as G
+
+
+@register_with_terminal(G.LETTER)
 class LetterLexer(LexerMixin, grammar.Terminal):
     def __init__(self, letters):
         if not isinstance(letters, str):
             raise TypeError(letters)
 
-        self.tokens += [grammar.Grammar.LETTER]
+        self.tokens += [G.LETTER]
         self.variables += list(letters)
 
         self.t_LETTER = r'[%s]' % letters

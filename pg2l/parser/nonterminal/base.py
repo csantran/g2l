@@ -9,11 +9,12 @@
 from inspect import ismethod, getmro
 import ply.yacc as yacc
 
+from pg2l.parser.base import decorator_register_factory
 from pg2l.parser.mixin import AbstractMixin
 
 
 class ParserMixin(AbstractMixin):
-    """Mixin"""
+    """Parser Mixin base class"""
 
 def get_class_that_defined(method):
     for cls in getmro(method.__self__.__class__)[1:]:
@@ -74,9 +75,4 @@ def docstring_production(*args, **kwargs):
 
 nonterminals = {}
 
-def register_with_nonterminal(nterm):
-    def __register(cls):
-        nonterminals[nterm] = cls
-        return cls
-
-    return __register
+register_with_nonterminal = decorator_register_factory(nonterminals)

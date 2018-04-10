@@ -17,24 +17,7 @@ class NonTerminal(object):
 class Grammar(object):
     pass
 
-terminals = {}
-nonterminals = {}
-
 def register(element, *others):
-
-    def __register_element_with(this_cls=None):
-        if this_cls:
-            bases = inspect.getmro(this_cls)
-
-            if Terminal in bases:
-                terminals[element] = this_cls
-            elif NonTerminal in bases:
-                nonterminals[element] = this_cls
-            else:
-                raise TypeError(this_cls)
-
-        return this_cls
-
     if hasattr(Grammar, element):
         raise AttributeError(element)
 
@@ -43,5 +26,14 @@ def register(element, *others):
     for o in others:
         setattr(Grammar, o, o)
 
-    return __register_element_with
+register('LETTER')
+register('OP_REWRITE', 'OP_GLCONTEXT', 'OP_GRCONTEXT', 'OP_SLCONTEXT', 'OP_SRCONTEXT')
+register('LBR', 'RBR')
+register('NUMBER')
+
+register('basenode', 'node', 'letter')
+register('expression', 'axiom', 'level')
+
+
+
 

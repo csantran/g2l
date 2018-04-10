@@ -25,7 +25,8 @@ from .base import BaseTree
 
 class Terminal(Leaf):
     """
-    A simple terminal object that contains data
+    A simple terminal object of ast that contains data
+    note that ast each class correspond to a grammar nonterminal symbol
 
     Parameters
     ----------
@@ -37,10 +38,7 @@ class Terminal(Leaf):
         super().__init__()
         self.data = kwargs
 
-class Symbol(Terminal):
-    """A symbol, matching symbol of the L-system, can be a letter or a number"""
-
-class Letter(Symbol, LeftOperand):
+class Letter(Terminal, LeftOperand):
     """A letter and some parameters"""
     repr_string = '(LTR %s)'
 
@@ -54,7 +52,7 @@ class Empty(Letter):
     def __init__(self, **kwargs):
         super().__init__(symbol='')
 
-class Jump(Symbol, LeftOperand):
+class Jump(Terminal):
     """A Jump, a number and some parameters"""
     repr_string = '(JMP %s)'
 
@@ -266,7 +264,7 @@ def copy(obj):
 
     Examples
     --------
-    >>> x = Symbol(symbol='B')
+    >>> x = Letter(symbol='B')
     >>> y = copy(x)
     >>> print(y.data)
     {'symbol': 'B'}

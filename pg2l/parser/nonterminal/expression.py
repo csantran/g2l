@@ -9,10 +9,7 @@
 from .base import ParserMixin, docstring_production, register_with_nonterminal
 
 from pg2l import ast
-from pg2l import grammar
 from pg2l.grammar import Grammar as G
-
-grammar.register('basenode', 'node', 'letter')()
 
 @register_with_nonterminal(G.node)
 class NodeParser(ParserMixin):
@@ -41,8 +38,6 @@ class NodeParser(ParserMixin):
         {0} : {1}
         """
         p[0] = ast.Letter(symbol=p[1])
-
-grammar.register('expression', 'axiom', 'level')()
 
 @register_with_nonterminal(G.expression)
 class ExpressionParser(ParserMixin):

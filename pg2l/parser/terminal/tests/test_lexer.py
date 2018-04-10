@@ -1,9 +1,9 @@
 # -*- coding : utf-8 -*-
 import unittest
 
-from pg2l.grammar import Grammar, terminals
+from pg2l.grammar import Grammar
 from pg2l.parser.mixin import mixin
-from pg2l.parser.terminal.base import BaseLexer
+from pg2l.parser.terminal.base import BaseLexer, terminals
 
 def get_tokens(lexer):
     toks = []

@@ -6,6 +6,7 @@
 #
 # Authors:
 #    Cédric Santran <santrancedric@gmail.com>
+from .base import terminals
 from .letter import LetterLexer
 from .number import NumberLexer
 from .constant import LBRLexer, RBRLexer

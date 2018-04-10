@@ -49,6 +49,6 @@ def mixin(name, *params):
                 cls.__init__(self, *args, **kwargs)
 
     # renaming template
+    print(MixinTemplate.__name__, MixinTemplate.__qualname__)
     MixinTemplate.__qualname__ = name
-
     return MixinTemplate()
