@@ -37,7 +37,7 @@ class NodeParser(ParserMixin):
         """
         {0} : {1}
         """
-        p[0] = ast.Letter(symbol=p[1])
+        p[0] = ast.Letter(p[1])
 
 @register_with_nonterminal(G.expression)
 class ExpressionParser(ParserMixin):

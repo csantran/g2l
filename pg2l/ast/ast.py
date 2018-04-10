@@ -7,114 +7,125 @@
 # Authors:
 #    Cédric Santran <santrancedric@gmail.com>
 """
-pG2L abstract syntax tree
+NonTerminal Abstract Syntax Tree,
+a tree of grammar nonterminals
 """
-from .base import Leaf
-from .base import BTree as Infix
-from .base import BTreeLeft as LeftOperand
-from .base import BTreeRight as RightOperand
-from .base import KTree as Container
-from .base import BaseTree
+from .base import AbstractNonTerminal
+from .tree import Leaf
+from .tree import BTree as Infix
+from .tree import BTreeLeft as LeftOperand
+from .tree import BTreeRight as RightOperand
+from .tree import KTree as Container
+from .tree import BaseTree
 
 
 # *********
-# Terminals
+# NonTerminalLeaf
 # *********
 
-# Terminals ast classes
+# leafs of NonTerminal AST
 
-class Terminal(Leaf):
+class NonTerminalLeaf(AbstractNonTerminal, Leaf):
     """
-    A simple terminal object of ast that contains data
-    note that ast each class correspond to a grammar nonterminal symbol
+    A simple leaf object that contains value
 
     Parameters
     ----------
-    data : dict
+    value : dict
         terminal data's
     """
+    _value = None
 
-    def __init__(self, **kwargs):
+    def __init__(self, value=''):
         super().__init__()
-        self.data = kwargs
+        self._value = value
 
-class Letter(Terminal, LeftOperand):
-    """A letter and some parameters"""
-    repr_string = '(LTR %s)'
+    @property
+    def value(self):
+        return self._value
 
     def __str__(self):
-        return self.data['symbol']
+        return self.value
+
+class Letter(NonTerminalLeaf, LeftOperand):
+    """A letter"""
+    pass
 
 class Empty(Letter):
     """The empty symbol"""
-    repr_string = '(ε%s)'
+    pass
 
-    def __init__(self, **kwargs):
-        super().__init__(symbol='')
-
-class Jump(Terminal):
-    """A Jump, a number and some parameters"""
-    repr_string = '(JMP %s)'
+class Jump(NonTerminalLeaf):
+    """A Jump, a number"""
 
     def __str__(self):
-        return str(self.data['jump'])
+        return str(self.value)
 
 # ************
-# Nonterminals
+# NonterminalBranch
 # ************
 #
-# Nonterminals ast classes
+# branchs of Nonterminal ast 
 
-class BaseNode(Infix):
+class NonTerminalBranch(AbstractNonTerminal):
+    """branchs"""
+    def __str__(self):
+        """String representation of a tree
+
+        Returns
+        -------
+        str
+            string representation of a tree and all its children recursively
+        """
+        return ''.join(str(x) for x in self.children)
+
+class BaseNode(NonTerminalBranch, Infix):
     """Node base class, contains symbols"""
     pass
 
 class Node(BaseNode):
     """An node with only a letter symbol on his left side"""
-    repr_string = '(N %s)'
+    pass
 
-class JumpedNode(Node):
+class JNode(Node):
     """An node with a letter symbol on the left and a round of jump symbols on his right side"""
-    repr_string = '(JN %s)'
+    pass
 
 class Module(BaseNode):
     """An module with only a level (a level is also a symbol) on his left side"""
-    repr_string = '(M %s)'
-
     def __str__(self):
         """String representation of a module"""
         return '[%s]' % super().__str__()
 
 class JModule(Module):
     """An module with a level on the left and a round of jump on the right side"""
-    repr_string = '(JM %s)'
 
     def __str__(self):
         """String representation of a connected module"""
         return '[%s]%s' % (self.left, self.right)
 
-class Level(Container, LeftOperand):
+class Level(NonTerminalBranch, Container, LeftOperand):
     """A level,
     container for atoms, that is, it contains the nodes and modules of the same level"""
-    repr_string = '(LVL %s)'
+    pass
 
-class Round(Container, RightOperand):
+class Round(NonTerminalBranch, Container, RightOperand):
     """A round,
     container for jumps"""
-    repr_string = '(RND %s)'
+    pass
 
 # ******
 # String
 # ******
 
-class String(Container):
+class String(NonTerminalBranch, Container):
     """A string, a word of the language, a set of atoms
     """
-    rep_string = '(STRING %s)'
+    pass
 
 class Axiom(String):
     """An axiom"""
-    repr_string = '(AXIOM %s)'
+    pass
 
 # ****************
 # Production rules
@@ -149,7 +160,7 @@ class Rule(Infix, LeftOperand):
 # Context
 # *******
 
-class Contexts(Container, RightOperand):
+class Contexts(NonTerminalBranch, Container, RightOperand):
     """Context of a production rule,
     contains context strings"""
     pass
@@ -191,7 +202,6 @@ class Identity(BaseProduction):
 class G0L(BaseProduction):
     """G0L,
     a context-free production rule"""
-    repr_string = '(G0L %s)'
 
     def __str__(self):
         """String representation of a context-free production"""
@@ -200,7 +210,6 @@ class G0L(BaseProduction):
 class G1LL(BaseProduction):
     """G1LL,
     a non context-free production rule with left-context"""
-    repr_string = '(G1LL %s)'
 
     @property
     def left(self):
@@ -214,7 +223,6 @@ class G1LL(BaseProduction):
 class G1LR(BaseProduction):
     """G1LR
     a non context-free production rule with right-context"""
-    repr_string = '(G1LR %s)'
 
     @property
     def right(self):
@@ -228,7 +236,6 @@ class G1LR(BaseProduction):
 class G2L(BaseProduction):
     """G2L,
     a non context-free production rule with both left and right context"""
-    repr_string = '(G2L %s)'
 
     @property
     def left(self):
@@ -264,10 +271,14 @@ def copy(obj):
 
     Examples
     --------
-    >>> x = Letter(symbol='B')
+    >>> x = Letter('B')
     >>> y = copy(x)
-    >>> print(y.data)
-    {'symbol': 'B'}
+    >>> print(y.value)
+    B
+    >>> print(str(y))
+    B
+    >>> print(repr(y))
+    (letter B)
 
     Parameters
     ----------
@@ -279,7 +290,7 @@ def copy(obj):
     :obj:`tree`
         orphaned shallow copy of a tree
     """
-    t_copy = isinstance(obj, Terminal) and type(obj)(**dict(obj.data)) or type(obj)()
+    t_copy = isinstance(obj, NonTerminalLeaf) and type(obj)(obj.value) or type(obj)()
 
     if isinstance(obj, BaseTree):
         for child in obj.children:

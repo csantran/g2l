@@ -1,6 +1,6 @@
 import unittest
 
-from pg2l.ast.base import Leaf, KTree, BTree, BTreeLeft, BTreeRight
+from pg2l.ast.tree import Leaf, KTree, BTree, BTreeLeft, BTreeRight
 from pg2l.ast.ast import copy
 
 class TestAstBase(unittest.TestCase):
