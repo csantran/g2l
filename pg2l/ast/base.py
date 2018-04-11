@@ -17,7 +17,7 @@ class MetaSymbol(AbstractMetaSymbol):
     All concrete symbol must use this metaclass
     Implement the class attribut name"""
 
-    def __new__(cls, name, bases, classdict):
+    def __new__(mcs, name, bases, classdict):
         # look for __meta_name
         for base in bases:
             if hasattr(base, '_meta_name'):
@@ -73,4 +73,3 @@ class AbstractTerminalSymbol(AbstractSymbol):
 class AbstractNonTerminalSymbol(AbstractSymbol):
     """Abstract base class for grammar nonterminal symbols"""
     _meta_name = lambda name : name.lower()
-
