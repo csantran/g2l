@@ -10,7 +10,7 @@
 NonTerminal Abstract Syntax Tree,
 a tree of grammar nonterminals
 """
-from .base import AbstractNonTerminalSymbol, MetaSymbol
+from .base import AbstractNonTerminalLeafSymbol, AbstractNonTerminalBranchSymbol, MetaSymbol
 from .tree import Leaf
 from .tree import BTree as Infix
 from .tree import BTreeLeft as LeftOperand
@@ -24,29 +24,16 @@ from .tree import BaseTree
 # *********
 
 # leafs of NonTerminal AST
+class Expression(AbstractNonTerminalBranchSymbol, metaclass=MetaSymbol):
+    """EXpression"""
 
-class NonTerminalLeaf(AbstractNonTerminalSymbol, Leaf):
-    """
-    nonterminal leaf object, a string
+class NonTerminalLeaf(AbstractNonTerminalLeafSymbol, Leaf):
+    """nonterminal leaf object, a string"""
 
-    Parameters
-    ----------
-    string : str
-        a string
-    """
-    _string = None
-
-    def __init__(self, string):
-        super().__init__()
-        self._string = string
-
-    def __str__(self):
-        return self._string
-
-class Letter(NonTerminalLeaf, LeftOperand, metaclass=MetaSymbol):
+class Label(NonTerminalLeaf, LeftOperand, metaclass=MetaSymbol):
     """A letter"""
 
-class Empty(Letter, metaclass=MetaSymbol):
+class Empty(Label, metaclass=MetaSymbol):
     """The empty symbol"""
 
     def __init__(self):
@@ -64,7 +51,7 @@ class Jump(NonTerminalLeaf, metaclass=MetaSymbol):
 #
 # branchs of Nonterminal ast
 
-class NonTerminalBranch(AbstractNonTerminalSymbol):
+class NonTerminalBranch(AbstractNonTerminalBranchSymbol):
     """branchs"""
     def __str__(self):
         """String representation of a tree
@@ -263,12 +250,12 @@ def copy(obj):
 
     Examples
     --------
-    >>> x = Letter('B')
+    >>> x = Label('B')
     >>> y = copy(x)
     >>> print(y)
     B
     >>> print(repr(y))
-    (letter B)
+    (label B)
 
     Parameters
     ----------

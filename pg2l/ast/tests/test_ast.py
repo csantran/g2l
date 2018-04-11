@@ -2,7 +2,8 @@
 import unittest
 
 from pg2l.ast import ast
-from pg2l.ast.base import AbstractSymbol, AbstractNonTerminalSymbol
+from pg2l.ast.base import AbstractSymbol
+from pg2l.ast.base import AbstractNonTerminalLeafSymbol, AbstractNonTerminalBranchSymbol
 
 class TestAstAst(unittest.TestCase):
     # def test_empty(self):
@@ -11,16 +12,16 @@ class TestAstAst(unittest.TestCase):
     #     self.assertEqual(e.value, '')
 
     def setUp(self):
-        self.l = ast.Letter('A')
+        self.l = ast.Label('A')
         self.j = ast.Jump('-1')
         self.e = ast.Empty()
 
     def test_nonterminal_leaf(self):
-        self.assertEqual(ast.Letter.name, 'letter')
+        self.assertEqual(ast.Label.name, 'label')
         self.assertEqual(ast.Jump.name, 'jump')
         self.assertEqual(ast.Empty.name, 'empty')
 
-        self.assertEqual(repr(self.l), '(letter A)')
+        self.assertEqual(repr(self.l), '(label A)')
         self.assertEqual(repr(self.j), '(jump -1)')
         self.assertEqual(repr(self.e), '(empty)')
 
@@ -30,7 +31,7 @@ class TestAstAst(unittest.TestCase):
 
         for x in (self.l, self.j, self.e):
             self.assertIsInstance(x, AbstractSymbol)
-            self.assertIsInstance(x, AbstractNonTerminalSymbol)
+            self.assertIsInstance(x, AbstractNonTerminalLeafSymbol)
 
     def test_nonterminal(self):
         r = ast.Round()
@@ -39,11 +40,13 @@ class TestAstAst(unittest.TestCase):
         s.push(self.l)
         s.push(r)
 
+        self.assertIsInstance(r, AbstractNonTerminalBranchSymbol)
+        self.assertIsInstance(s, AbstractNonTerminalBranchSymbol)
         self.assertEqual(repr(s), '(jnode A-1)')
         self.assertEqual(str(s), 'A-1')
         self.assertEqual([repr(x) for x in s], [
             '(jnode A-1)',
-            '(letter A)',
+            '(label A)',
             '(round -1)',
             '(jump -1)'
             ])

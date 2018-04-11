@@ -8,6 +8,9 @@
 #    Cédric Santran <santrancedric@gmail.com>
 from abc import ABCMeta, abstractmethod
 
+from .grammar import Grammar
+
+
 class AbstractMetaSymbol(ABCMeta):
     """Abstract symbol metaclass"""
 
@@ -19,15 +22,23 @@ class MetaSymbol(AbstractMetaSymbol):
 
     def __new__(mcs, name, bases, classdict):
         # look for __meta_name
+        ismetasymbol = False
         for base in bases:
             if hasattr(base, '_meta_name'):
                 classdict['name'] = base._meta_name(name)
+                ismetasymbol = True
                 break
+            
+        cls = type(name, bases, classdict)
+        if ismetasymbol:
+            print('rrr', classdict['name'])
+            setattr(Grammar, classdict['name'], cls)
 
-        return type(name, bases, classdict)
+        return cls
 
 class AbstractSymbol(metaclass=AbstractMetaSymbol):
     """Abstract Base Class for grammar terminal and nonterminal symbol"""
+
     @property
     @abstractmethod
     def name(self):
@@ -58,18 +69,32 @@ class AbstractSymbol(metaclass=AbstractMetaSymbol):
     def __repr__(self):
         return '(%s %s)' % (str(self.name), str(self))
 
-class AbstractTerminalSymbol(AbstractSymbol):
-    """Abstract base class for grammar terminal symbols"""
-    _meta_name = lambda name : name.upper()
+class AbstractSymbolString(AbstractSymbol):
+    """
+    nonterminal leaf object, a string
 
-    @property
-    @abstractmethod
-    def value(self):
-        raise NotImplementedError()
+    Parameters
+    ----------
+    string : str
+        a string
+    """
+    _string = None
+    
+    def __init__(self, string):
+        super().__init__()
+        self._string = str(string)
 
     def __str__(self):
-        return str(self.value)
+        return self._string
 
-class AbstractNonTerminalSymbol(AbstractSymbol):
-    """Abstract base class for grammar nonterminal symbols"""
+class AbstractTerminalSymbol(AbstractSymbolString):
+    """Abstract base class for grammar terminal symbols"""
+    _meta_name = lambda name : name.upper()
+    
+class AbstractNonTerminalLeafSymbol(AbstractSymbolString):
+    """Abstract base class for grammar nonterminal leaf symbols"""
+    _meta_name = lambda name : name.lower()
+
+class AbstractNonTerminalBranchSymbol(AbstractSymbol):
+    """Abstract base class for grammar nonterminal branch symbols"""
     _meta_name = lambda name : name.lower()

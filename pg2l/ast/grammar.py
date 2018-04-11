@@ -6,6 +6,7 @@
 #
 # Authors:
 #    Cédric Santran <santrancedric@gmail.com>
-from . import ast as _
-from . import terminals as _
-from .grammar import Grammar
+class Grammar(object):
+    """a singleton filled by MetaSymbol, contain all grammar symbols, created dynamicaly"""
+    pass
+
