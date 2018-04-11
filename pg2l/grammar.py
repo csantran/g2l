@@ -6,8 +6,6 @@
 #
 # Authors:
 #    Cédric Santran <santrancedric@gmail.com>
-import inspect
-
 class Terminal(object):
     pass
 

@@ -19,14 +19,14 @@ class TestAbstractSymbol(unittest.TestCase):
 
         class Char(AbstractTerminalSymbol, metaclass=MetaSymbol):
             _value = None
-            
+
             def __init__(self, value):
                 self._value = value
 
             @property
             def value(self):
                 return self._value
-        
+
         class Letter(Leaf, metaclass=MetaSymbol):
             pass
 
