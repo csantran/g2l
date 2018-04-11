@@ -1,9 +1,9 @@
 # -*- coding : utf-8 -*-
 import unittest
 
-from pg2l.grammar import Grammar
 from pg2l.parser.mixin import mixin
 from pg2l.parser.terminal.base import BaseLexer, terminals
+from pg2l.ast import Grammar as G
 
 def get_tokens(lexer):
     toks = []
@@ -19,7 +19,7 @@ class TestLexer(unittest.TestCase):
     def test_letter(self):
         lexer = mixin('LexerMixin',
             (BaseLexer, (), {}),
-            (terminals[Grammar.LETTER], ('ABCD',), {}),)
+            (terminals[G.LETTER.name], ('ABCD',), {}),)
         lexer.build()
         lexer.lexer.input('A')
 
@@ -31,7 +31,7 @@ class TestLexer(unittest.TestCase):
     def test_number(self):
         lexer = mixin('LexerMixin',
                           (BaseLexer, (), {}),
-                          (terminals[Grammar.NUMBER], (-1,0,1), {}),)
+                          (terminals[G.NUMBER.name], (-1,0,1), {}),)
 
         lexer.build()
         lexer.lexer.input('10-1')
@@ -44,7 +44,7 @@ class TestLexer(unittest.TestCase):
     def test_constants(self):
         lexer = mixin('LexerMixin',
                           (BaseLexer, (), {}),
-                          (terminals[Grammar.LBR], ('[',), {}),)
+                          (terminals[G.LBR.name], ('[',), {}),)
 
         lexer.build()
         lexer.lexer.input('[')
@@ -53,15 +53,15 @@ class TestLexer(unittest.TestCase):
 
         lexer = mixin('LexerMixin',
                           (BaseLexer, (), {}),
-                          (terminals[Grammar.RBR], (']',), {}),)
+                          (terminals[G.RBR.name], (']',), {}),)
         lexer.build()
         lexer.lexer.input(']')
 
         self.assertEqual(get_tokens(lexer), [('RBR', ']')])
         lexer = mixin('LexerMixin',
                           (BaseLexer, (), {}),
-                          (terminals[Grammar.LBR], ('['), {}),
-                          (terminals[Grammar.RBR], (']'), {}))
+                          (terminals[G.LBR.name], ('['), {}),
+                          (terminals[G.RBR.name], (']'), {}))
         lexer.build()
         lexer.lexer.input('[]')
 
@@ -69,8 +69,8 @@ class TestLexer(unittest.TestCase):
 
         lexer = mixin('LexerMixin',
                           (BaseLexer, (), {}),
-                          (terminals[Grammar.LBR], (), {}),
-                          (terminals[Grammar.RBR], (), {}))
+                          (terminals[G.LBR.name], (), {}),
+                          (terminals[G.RBR.name], (), {}))
 
         lexer.build()
         lexer.lexer.input('[]')
@@ -79,8 +79,8 @@ class TestLexer(unittest.TestCase):
 
         lexer = mixin('LexerMixin',
                           (BaseLexer, (), {}),
-                          (terminals[Grammar.LBR], ('('), {}),
-                          (terminals[Grammar.RBR], (')'), {}))
+                          (terminals[G.LBR.name], ('('), {}),
+                          (terminals[G.RBR.name], (')'), {}))
 
         lexer.build()
         lexer.lexer.input('()')
@@ -90,11 +90,11 @@ class TestLexer(unittest.TestCase):
     def test_operator(self):
         lexer = mixin('LexerMixin',
             (BaseLexer, (), {}),
-            (terminals[Grammar.OP_REWRITE], (), {}),
-            (terminals[Grammar.OP_GLCONTEXT], (), {}),
-            (terminals[Grammar.OP_GRCONTEXT], (), {}),
-            (terminals[Grammar.OP_SLCONTEXT], (), {}),
-            (terminals[Grammar.OP_SRCONTEXT], (), {})
+            (terminals[G.OP_REWRITE.name], (), {}),
+            (terminals[G.OP_GLCONTEXT.name], (), {}),
+            (terminals[G.OP_GRCONTEXT.name], (), {}),
+            (terminals[G.OP_SLCONTEXT.name], (), {}),
+            (terminals[G.OP_SRCONTEXT.name], (), {})
             )
 
         lexer.build()
@@ -109,11 +109,11 @@ class TestLexer(unittest.TestCase):
 
         lexer = mixin('LexerMixin',
             (BaseLexer, (), {}),
-            (terminals[Grammar.OP_REWRITE], ('⇒'), {}),
-            (terminals[Grammar.OP_GLCONTEXT], ('↢'), {}),
-            (terminals[Grammar.OP_GRCONTEXT], ('↣'), {}),
-            (terminals[Grammar.OP_SLCONTEXT], ('↤'), {}),
-            (terminals[Grammar.OP_SRCONTEXT], ('↦'), {})
+            (terminals[G.OP_REWRITE.name], ('⇒'), {}),
+            (terminals[G.OP_GLCONTEXT.name], ('↢'), {}),
+            (terminals[G.OP_GRCONTEXT.name], ('↣'), {}),
+            (terminals[G.OP_SLCONTEXT.name], ('↤'), {}),
+            (terminals[G.OP_SRCONTEXT.name], ('↦'), {})
             )
 
         lexer.build()

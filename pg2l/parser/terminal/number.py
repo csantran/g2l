@@ -7,19 +7,20 @@
 # Authors:
 #    Cédric Santran <santrancedric@gmail.com>
 from .base import LexerMixin, register_with_terminal
-from pg2l import grammar
-from pg2l.grammar import Grammar as G
+from pg2l.ast import Grammar as G
 
+def num(t):
+    t.value = int(t.value)
+    return t
 
-@register_with_terminal(G.NUMBER)
-class NumberLexer(LexerMixin, grammar.Terminal):
+@register_with_terminal(G.NUMBER.name)
+class NumberLexer(LexerMixin):
     def __init__(self, *numbers):
-        self.tokens += [G.NUMBER]
+        self.tokens += [G.NUMBER.name]
         self.variables += [str(x) for x in numbers]
         numbers = [str(x) for x in numbers]
-        NumberLexer.t_NUMBER.__doc__ = r'|'.join(['%s' % i for i in numbers])
 
-    @staticmethod
-    def t_NUMBER(t):
-        t.value = int(t.value)
-        return t
+        setattr(NumberLexer, 't_%s' % G.NUMBER.name, staticmethod(num))
+        getattr(NumberLexer, 't_%s' % G.NUMBER.name).__doc__ = r'|'.join(['%s' % i for i in numbers])
+
+

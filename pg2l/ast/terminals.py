@@ -17,3 +17,23 @@ class Letter(Char, metaclass=MetaSymbol):
 class Number(Char, metaclass=MetaSymbol):
     pass
 
+class Lbr(Char, metaclass=MetaSymbol):
+    pass
+
+class Rbr(Char, metaclass=MetaSymbol):
+    pass
+
+class Op_Rewrite(Char, metaclass=MetaSymbol):
+    pass
+
+class Op_GLContext(Char, metaclass=MetaSymbol):
+    pass
+
+class Op_GRContext(Char, metaclass=MetaSymbol):
+    pass
+
+class Op_SLContext(Char, metaclass=MetaSymbol):
+    pass
+
+class Op_SRContext(Char, metaclass=MetaSymbol):
+    pass
