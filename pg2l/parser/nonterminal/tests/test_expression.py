@@ -17,8 +17,8 @@ def get_tokens(lexer):
 
     return [(x.type, x.value) for x in toks]
 
-class TestLexer(unittest.TestCase):
-    def test_letter(self):
+class TestExpression(unittest.TestCase):
+    def test_parser(self):
         lexer = mixin('LexerMixin',
                           (BaseLexer, (), {}),
                           (terminals[G.LETTER], ('ABCD',), {}),
@@ -34,8 +34,8 @@ class TestLexer(unittest.TestCase):
             (nonterminals[G.expression], (), {}),
             (nonterminals[G.node], (), {}),)
 
-        print(repr(parser))
         parser.build(lexer)
+
         self.assertEqual(repr(parser.parse('ABCD')), '(axiom ABCD)')
         self.assertEqual(str(type(parser)), "<class 'pg2l.parser.mixin.MixinParser'>")
         self.assertIsInstance(parser, BaseParser)

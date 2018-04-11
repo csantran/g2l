@@ -12,7 +12,8 @@ class TestGrammar(unittest.TestCase):
         class Op_Rewrite(AbstractTerminalSymbol, metaclass=MetaSymbol):
             pass
 
-        print(Op_Rewrite.name)
-        print(G.OP_REWRITE)
+        self.assertEqual(Op_Rewrite.name, 'OP_REWRITE')
+        self.assertEqual(G.OP_REWRITE, Op_Rewrite)
+
 if __name__ == '__main__':
     unittest.main(verbosity=2)

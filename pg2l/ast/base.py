@@ -31,7 +31,6 @@ class MetaSymbol(AbstractMetaSymbol):
             
         cls = type(name, bases, classdict)
         if ismetasymbol:
-            print('rrr', classdict['name'])
             setattr(Grammar, classdict['name'], cls)
 
         return cls

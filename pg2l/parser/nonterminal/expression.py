@@ -29,7 +29,6 @@ class NodeParser(ParserMixin):
         """
         {0} : {1}
         """
-        print('LLL', type(p[1]))
         p[0] = G.node()
         p[0].push(p[1])
 
@@ -39,7 +38,6 @@ class NodeParser(ParserMixin):
         """
         {0} : {1}
         """
-        print('TTT', type(p[1]))
         p[0] = G.label(G.LETTER(p[1]))
 
 @register_with_nonterminal(G.expression.name)

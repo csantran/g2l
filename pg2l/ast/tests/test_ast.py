@@ -60,7 +60,7 @@ class TestAstAst(unittest.TestCase):
             m.push(r)
 
         m.push(ast.copy(r))
-        print(repr(m))
-        print(str(m))
+        self.assertEqual(repr(m), '(jmodule [A-1]-1)')
+        self.assertEqual(str(m), '[A-1]-1')
 if __name__ == '__main__':
     unittest.main(verbosity=2)

@@ -4,7 +4,7 @@ import unittest
 from pg2l.ast.terminals import Letter, Number
 from pg2l.ast.base import AbstractSymbol
 
-class TestAstAst(unittest.TestCase):
+class TestTerminals(unittest.TestCase):
     def test_terminals(self):
         self.assertEqual(Letter.name, 'LETTER')
         self.assertEqual(Number.name, 'NUMBER')
