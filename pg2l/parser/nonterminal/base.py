@@ -66,9 +66,10 @@ class BaseParser(ParserMixin):
                                 debug=self.__debug)
         return self
 
-def docstring_production(*args, **kwargs):
+def docstring_production(*args):
     def __decorate(method):
-        method.__doc__ = method.__doc__.format(*args, **kwargs)
+        method.__doc__ = method.__doc__.format(*[x for x in args])
+        print('DOC', method.__doc__, args)
         return method
 
     return __decorate

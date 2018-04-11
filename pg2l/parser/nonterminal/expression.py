@@ -15,7 +15,7 @@ from pg2l.grammar import Grammar as G
 class NodeParser(ParserMixin):
 
     @staticmethod
-    @docstring_production(G.basenode, G.node)
+    @docstring_production(str(ast.BaseNode.name), str(ast.Node.name))
     def p_basenode_node(p):
         """
         {0} : {1}
@@ -23,7 +23,7 @@ class NodeParser(ParserMixin):
         p[0] = p[1]
 
     @staticmethod
-    @docstring_production(G.node, G.letter)
+    @docstring_production(str(ast.Node.name), str(ast.Letter.name))
     def p_node(p):
         """
         {0} : {1}
@@ -32,7 +32,7 @@ class NodeParser(ParserMixin):
         p[0].push(p[1])
 
     @staticmethod
-    @docstring_production(G.letter, G.LETTER)
+    @docstring_production(str(ast.Letter.name), G.LETTER)
     def p_letter(p):
         """
         {0} : {1}
@@ -43,7 +43,7 @@ class NodeParser(ParserMixin):
 class ExpressionParser(ParserMixin):
 
     @staticmethod
-    @docstring_production(G.expression, G.axiom)
+    @docstring_production(G.expression, str(ast.Axiom.name))
     def p_expression_axiom(p):
         """
         {0} : {1}
@@ -51,7 +51,7 @@ class ExpressionParser(ParserMixin):
         p[0] = p[1]
 
     @staticmethod
-    @docstring_production(G.axiom, G.level)
+    @docstring_production(str(ast.Axiom.name), str(ast.Level.name))
     def p_axiom_level(p):
         """
         {0} : {1}
@@ -60,7 +60,7 @@ class ExpressionParser(ParserMixin):
         p[0].push(p[1])
 
     @staticmethod
-    @docstring_production(G.level, G.basenode)
+    @docstring_production(str(ast.Level.name), str(ast.BaseNode.name))
     def p_level_basenode(p):
         """
         {0} : {1}

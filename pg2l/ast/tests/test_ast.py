@@ -2,24 +2,62 @@
 import unittest
 
 from pg2l.ast import ast
+from pg2l.ast.base import AbstractSymbol, AbstractNonTerminalSymbol
 
 class TestAstAst(unittest.TestCase):
-    def test_empty(self):
-        e = ast.Empty()
-        self.assertEqual(str(e), '')
-        self.assertEqual(e.value, '')
+    # def test_empty(self):
+    #     e = ast.Empty()
+    #     self.assertEqual(str(e), '')
+    #     self.assertEqual(e.value, '')
 
-    def test_SYM(self):
-        l = ast.Letter('A')
+    def setUp(self):
+        self.l = ast.Letter('A')
+        self.j = ast.Jump('-1')
+        self.e = ast.Empty()
+
+    def test_nonterminal_leaf(self):
+        self.assertEqual(ast.Letter.name, 'letter')
+        self.assertEqual(ast.Jump.name, 'jump')
+        self.assertEqual(ast.Empty.name, 'empty')
+
+        self.assertEqual(repr(self.l), '(letter A)')
+        self.assertEqual(repr(self.j), '(jump -1)')
+        self.assertEqual(repr(self.e), '(empty)')
+
+        self.assertEqual(str(self.l), 'A')
+        self.assertEqual(str(self.j), '-1')
+        self.assertEqual(str(self.e), '')
+
+        for x in (self.l, self.j, self.e):
+            self.assertIsInstance(x, AbstractSymbol)
+            self.assertIsInstance(x, AbstractNonTerminalSymbol)
+
+    def test_nonterminal(self):
         r = ast.Round()
-        j = ast.Jump(1)
         s = ast.JNode()
-        r.push(j)
-        s.push(l)
+        r.push(self.j)
+        s.push(self.l)
         s.push(r)
-        self.assertEqual(repr(s), '(jnode A1)')
-        self.assertEqual(str(s), 'A1')
-        self.assertEqual([repr(x) for x in s], ['(jnode A1)', '(letter A)', '(round 1)', '(jump 1)'])
 
+        self.assertEqual(repr(s), '(jnode A-1)')
+        self.assertEqual(str(s), 'A-1')
+        self.assertEqual([repr(x) for x in s], [
+            '(jnode A-1)',
+            '(letter A)',
+            '(round -1)',
+            '(jump -1)'
+            ])
+
+        m = ast.JModule()
+        lm = ast.Level()
+        lm.push(s)
+        m.push(lm)
+
+        with self.assertRaises(AssertionError):
+            m.push(r)
+
+        m.push(ast.copy(r))
+        print(repr(m))
+        print(str(m))
 if __name__ == '__main__':
     unittest.main(verbosity=2)

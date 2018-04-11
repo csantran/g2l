@@ -34,6 +34,7 @@ class TestLexer(unittest.TestCase):
             (nonterminals[G.expression], (), {}),
             (nonterminals[G.node], (), {}),)
 
+        print(repr(parser))
         parser.build(lexer)
         self.assertEqual(repr(parser.parse('ABCD')), '(axiom ABCD)')
         self.assertEqual(str(type(parser)), "<class 'pg2l.parser.mixin.MixinParser'>")

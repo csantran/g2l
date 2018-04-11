@@ -10,7 +10,7 @@
 NonTerminal Abstract Syntax Tree,
 a tree of grammar nonterminals
 """
-from .base import AbstractNonTerminal
+from .base import AbstractNonTerminalSymbol, MetaSymbol
 from .tree import Leaf
 from .tree import BTree as Infix
 from .tree import BTreeLeft as LeftOperand
@@ -25,49 +25,46 @@ from .tree import BaseTree
 
 # leafs of NonTerminal AST
 
-class NonTerminalLeaf(AbstractNonTerminal, Leaf):
+class NonTerminalLeaf(AbstractNonTerminalSymbol, Leaf):
     """
-    A simple leaf object that contains value
+    nonterminal leaf object, a string
 
     Parameters
     ----------
-    value : dict
-        terminal data's
+    string : str
+        a string
     """
-    _value = None
+    _string = None
 
-    def __init__(self, value=''):
+    def __init__(self, string):
         super().__init__()
-        self._value = value
-
-    @property
-    def value(self):
-        return self._value
+        self._string = string
 
     def __str__(self):
-        return self.value
+        return self._string
 
-class Letter(NonTerminalLeaf, LeftOperand):
+class Letter(NonTerminalLeaf, LeftOperand, metaclass=MetaSymbol):
     """A letter"""
-    pass
 
-class Empty(Letter):
+class Empty(Letter, metaclass=MetaSymbol):
     """The empty symbol"""
-    pass
 
-class Jump(NonTerminalLeaf):
-    """A Jump, a number"""
+    def __init__(self):
+        super().__init__('')
 
-    def __str__(self):
-        return str(self.value)
+    def __repr__(self):
+        return '(%s)' % Empty.name
+
+class Jump(NonTerminalLeaf, metaclass=MetaSymbol):
+    """A Jump, a string that represent a number"""
 
 # ************
 # NonterminalBranch
 # ************
 #
-# branchs of Nonterminal ast 
+# branchs of Nonterminal ast
 
-class NonTerminalBranch(AbstractNonTerminal):
+class NonTerminalBranch(AbstractNonTerminalSymbol):
     """branchs"""
     def __str__(self):
         """String representation of a tree
@@ -79,37 +76,34 @@ class NonTerminalBranch(AbstractNonTerminal):
         """
         return ''.join(str(x) for x in self.children)
 
-class BaseNode(NonTerminalBranch, Infix):
+class BaseNode(NonTerminalBranch, Infix, metaclass=MetaSymbol):
     """Node base class, contains symbols"""
-    pass
 
-class Node(BaseNode):
+class Node(BaseNode, metaclass=MetaSymbol):
     """An node with only a letter symbol on his left side"""
-    pass
 
-class JNode(Node):
+class JNode(Node, metaclass=MetaSymbol):
     """An node with a letter symbol on the left and a round of jump symbols on his right side"""
-    pass
 
-class Module(BaseNode):
+class Module(BaseNode, metaclass=MetaSymbol):
     """An module with only a level (a level is also a symbol) on his left side"""
     def __str__(self):
         """String representation of a module"""
         return '[%s]' % super().__str__()
 
-class JModule(Module):
+class JModule(Module, metaclass=MetaSymbol):
     """An module with a level on the left and a round of jump on the right side"""
 
     def __str__(self):
         """String representation of a connected module"""
         return '[%s]%s' % (self.left, self.right)
 
-class Level(NonTerminalBranch, Container, LeftOperand):
+class Level(NonTerminalBranch, Container, LeftOperand, metaclass=MetaSymbol):
     """A level,
     container for atoms, that is, it contains the nodes and modules of the same level"""
     pass
 
-class Round(NonTerminalBranch, Container, RightOperand):
+class Round(NonTerminalBranch, Container, RightOperand, metaclass=MetaSymbol):
     """A round,
     container for jumps"""
     pass
@@ -123,7 +117,7 @@ class String(NonTerminalBranch, Container):
     """
     pass
 
-class Axiom(String):
+class Axiom(String, metaclass=MetaSymbol):
     """An axiom"""
     pass
 
@@ -196,8 +190,6 @@ class BaseProduction(Infix):
 
 class Identity(BaseProduction):
     """Identity production where the successor is identical to the predecessor"""
-    def __init__(self, predecessor):
-        raise NotImplementedError()
 
 class G0L(BaseProduction):
     """G0L,
@@ -273,9 +265,7 @@ def copy(obj):
     --------
     >>> x = Letter('B')
     >>> y = copy(x)
-    >>> print(y.value)
-    B
-    >>> print(str(y))
+    >>> print(y)
     B
     >>> print(repr(y))
     (letter B)
@@ -290,7 +280,7 @@ def copy(obj):
     :obj:`tree`
         orphaned shallow copy of a tree
     """
-    t_copy = isinstance(obj, NonTerminalLeaf) and type(obj)(obj.value) or type(obj)()
+    t_copy = isinstance(obj, NonTerminalLeaf) and type(obj)(str(obj)) or type(obj)()
 
     if isinstance(obj, BaseTree):
         for child in obj.children:
