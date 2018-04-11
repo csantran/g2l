@@ -15,7 +15,8 @@ class LexerMixin(AbstractMixin):
     """Lexer Mixin base class"""
 
 class BaseLexer(LexerMixin):
-    def __init__(self):
+    def __init__(self, strict=False):
+        self.__strict = strict
         self.lexer = None
         self.tokens = []
         self.variables = []
@@ -25,8 +26,9 @@ class BaseLexer(LexerMixin):
     @property
     def alphabet(self): return frozenset(set(self.variables) | set(self.constants))
 
-    @staticmethod
-    def t_error(t):
+    def t_error(self, t):
+        if self.__strict:
+            raise ValueError("pg2l.lexer: error, illegal character '%s'" % t.value[0])
         print("warning:g2l.lexer: error, illegal character '%s'" % t.value[0])
         t.lexer.skip(1)
 
