@@ -8,4 +8,5 @@
 #    Cédric Santran <santrancedric@gmail.com>
 from . import ast as _
 from . import terminals as _
-from .grammar import Grammar
+from .base import MetaDeclaration
+from .grammar import MetaGrammar

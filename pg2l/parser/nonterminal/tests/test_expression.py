@@ -4,7 +4,7 @@ import unittest
 from pg2l.parser.nonterminal.base import nonterminals, BaseParser
 from pg2l.parser.terminal.base import terminals, BaseLexer
 from pg2l.parser.mixin import mixin
-from pg2l.ast import Grammar as G
+from pg2l.ast import MetaDeclaration as G
 
 
 def get_tokens(lexer):
@@ -79,6 +79,10 @@ node : label""")
 
         parser.build(lexer)
 
+        print()
+        print(type(parser.parser))
+        print(dir(parser.parser))
+        print(parser.parser.productions)
         with self.assertRaises(ValueError):
             parser.parse('Z')
 

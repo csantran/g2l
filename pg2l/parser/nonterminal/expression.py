@@ -9,7 +9,7 @@
 from .base import ParserMixin, docstring_production, register_with_nonterminal
 
 from pg2l.ast import terminals
-from pg2l.ast import Grammar as G
+from pg2l.ast import MetaDeclaration as G
 
 
 @register_with_nonterminal(G.node.name)

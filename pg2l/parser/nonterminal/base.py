@@ -11,7 +11,7 @@ import ply.yacc as yacc
 
 from pg2l.parser.base import decorator_register_factory
 from pg2l.parser.mixin import AbstractMixin
-from pg2l.ast import Grammar as G
+from pg2l.ast import MetaDeclaration as G
 
 class ParserMixin(AbstractMixin):
     """Parser Mixin base class"""

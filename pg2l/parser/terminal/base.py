@@ -7,6 +7,7 @@
 # Authors:
 #    Cédric Santran <santrancedric@gmail.com>
 import ply.lex as lex
+from inspect import ismethod
 
 from pg2l.parser.base import decorator_register_factory
 from pg2l.parser.mixin import AbstractMixin
@@ -44,6 +45,23 @@ class BaseLexer(LexerMixin):
     def build(self):
         self.lexer = lex.lex(module=self)
         return self
+
+    def __repr__(self):
+        repr_string = []
+
+        for name in dir(self):
+            if name.startswith('t_') and name not in ('t_error', '__init__'):
+                method = getattr(self, name)
+                repr_string.append('\n#from %s' % method)
+
+                for line in [l.strip() for l in method.__doc__.split('\n')]:
+                    if line:
+
+                        repr_string.append((line.startswith('|') \
+                                                and '\t%s' % line \
+                                                or '%s : %s' % (method.__name__, line)))
+
+        return '\n'.join(repr_string)
 
 terminals = {}
 

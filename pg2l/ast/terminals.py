@@ -8,32 +8,35 @@
 #    Cédric Santran <santrancedric@gmail.com>
 from .base import AbstractTerminalSymbol, MetaSymbol
 
-class Char(AbstractTerminalSymbol):
+class Variable(AbstractTerminalSymbol):
     pass
 
-class Letter(Char, metaclass=MetaSymbol):
+class Constant(AbstractTerminalSymbol):
     pass
 
-class Number(Char, metaclass=MetaSymbol):
+class Letter(Variable, metaclass=MetaSymbol):
     pass
 
-class Lbr(Char, metaclass=MetaSymbol):
+class Number(Variable, metaclass=MetaSymbol):
     pass
 
-class Rbr(Char, metaclass=MetaSymbol):
+class Lbr(Constant, metaclass=MetaSymbol):
     pass
 
-class Op_Rewrite(Char, metaclass=MetaSymbol):
+class Rbr(Constant, metaclass=MetaSymbol):
     pass
 
-class Op_GLContext(Char, metaclass=MetaSymbol):
+class Rewrite(Constant, metaclass=MetaSymbol):
     pass
 
-class Op_GRContext(Char, metaclass=MetaSymbol):
+class GLContext(Constant, metaclass=MetaSymbol):
     pass
 
-class Op_SLContext(Char, metaclass=MetaSymbol):
+class GRContext(Constant, metaclass=MetaSymbol):
     pass
 
-class Op_SRContext(Char, metaclass=MetaSymbol):
+class SLContext(Constant, metaclass=MetaSymbol):
+    pass
+
+class SRContext(Constant, metaclass=MetaSymbol):
     pass

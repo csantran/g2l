@@ -175,6 +175,9 @@ class BaseProduction(Infix):
         """rule getter"""
         return self.left
 
+class Production(BaseProduction, metaclass=MetaSymbol):
+    """Production"""
+
 class Identity(BaseProduction):
     """Identity production where the successor is identical to the predecessor"""
 

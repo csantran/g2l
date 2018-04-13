@@ -8,12 +8,12 @@
 #    Cédric Santran <santrancedric@gmail.com>
 from abc import ABCMeta, abstractmethod
 
-from .grammar import Grammar
-
-
 class AbstractMetaSymbol(ABCMeta):
     """Abstract symbol metaclass"""
 
+class MetaDeclaration(object):
+    """a singleton filled by MetaSymbol, contain all grammar symbols, created dynamicaly"""
+    pass
 
 class MetaSymbol(AbstractMetaSymbol):
     """Symbol metaclass,
@@ -31,7 +31,7 @@ class MetaSymbol(AbstractMetaSymbol):
             
         cls = type(name, bases, classdict)
         if ismetasymbol:
-            setattr(Grammar, classdict['name'], cls)
+            setattr(MetaDeclaration, classdict['name'], cls)
 
         return cls
 

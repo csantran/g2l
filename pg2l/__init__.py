@@ -9,5 +9,5 @@
 
 # registering terminals and nonterminals with decorator in grammar (see grammar.py),
 # but without polluting the namespace
-from .parser import terminal as __
-from .parser import nonterminal as __
+# from .parser import terminal as __
+# from .parser import nonterminal as __

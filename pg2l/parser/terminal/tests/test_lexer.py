@@ -3,7 +3,7 @@ import unittest
 
 from pg2l.parser.mixin import mixin
 from pg2l.parser.terminal.base import BaseLexer, terminals
-from pg2l.ast import Grammar as G
+from pg2l.ast import MetaDeclaration as G
 
 def get_tokens(lexer):
     toks = []
@@ -90,40 +90,40 @@ class TestLexer(unittest.TestCase):
     def test_operator(self):
         lexer = mixin('LexerMixin',
             (BaseLexer, (), {}),
-            (terminals[G.OP_REWRITE.name], (), {}),
-            (terminals[G.OP_GLCONTEXT.name], (), {}),
-            (terminals[G.OP_GRCONTEXT.name], (), {}),
-            (terminals[G.OP_SLCONTEXT.name], (), {}),
-            (terminals[G.OP_SRCONTEXT.name], (), {})
+            (terminals[G.REWRITE.name], (), {}),
+            (terminals[G.GLCONTEXT.name], (), {}),
+            (terminals[G.GRCONTEXT.name], (), {}),
+            (terminals[G.SLCONTEXT.name], (), {}),
+            (terminals[G.SRCONTEXT.name], (), {})
             )
 
         lexer.build()
         lexer.lexer.input(':<>{}')
         self.assertEqual(get_tokens(lexer), [
-            ('OP_REWRITE', ':'),
-            ('OP_GLCONTEXT', '<'),
-            ('OP_GRCONTEXT', '>'),
-            ('OP_SLCONTEXT', '{'),
-            ('OP_SRCONTEXT', '}')
+            ('REWRITE', ':'),
+            ('GLCONTEXT', '<'),
+            ('GRCONTEXT', '>'),
+            ('SLCONTEXT', '{'),
+            ('SRCONTEXT', '}')
             ])
 
         lexer = mixin('LexerMixin',
             (BaseLexer, (), {}),
-            (terminals[G.OP_REWRITE.name], ('⇒'), {}),
-            (terminals[G.OP_GLCONTEXT.name], ('↢'), {}),
-            (terminals[G.OP_GRCONTEXT.name], ('↣'), {}),
-            (terminals[G.OP_SLCONTEXT.name], ('↤'), {}),
-            (terminals[G.OP_SRCONTEXT.name], ('↦'), {})
+            (terminals[G.REWRITE.name], ('⇒'), {}),
+            (terminals[G.GLCONTEXT.name], ('↢'), {}),
+            (terminals[G.GRCONTEXT.name], ('↣'), {}),
+            (terminals[G.SLCONTEXT.name], ('↤'), {}),
+            (terminals[G.SRCONTEXT.name], ('↦'), {})
             )
 
         lexer.build()
         lexer.lexer.input('⇒↢↣↤↦')
         self.assertEqual(get_tokens(lexer), [
-            ('OP_REWRITE', '⇒'),
-            ('OP_GLCONTEXT', '↢'),
-            ('OP_GRCONTEXT', '↣'),
-            ('OP_SLCONTEXT', '↤'),
-            ('OP_SRCONTEXT', '↦')])
+            ('REWRITE', '⇒'),
+            ('GLCONTEXT', '↢'),
+            ('GRCONTEXT', '↣'),
+            ('SLCONTEXT', '↤'),
+            ('SRCONTEXT', '↦')])
 
 if __name__ == '__main__':
     unittest.main(verbosity=2)

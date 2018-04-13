@@ -8,7 +8,7 @@
 #    Cédric Santran <santrancedric@gmail.com>
 from .base import LexerMixin, register_with_terminal
 
-from pg2l.ast import Grammar as G
+from pg2l.ast import MetaDeclaration as G
 
 
 @register_with_terminal(G.LETTER.name)
@@ -20,4 +20,5 @@ class LetterLexer(LexerMixin):
         self.tokens += [G.LETTER.name]
         self.variables += list(letters)
 
-        self.t_LETTER = r'[%s]' % letters
+        setattr(LetterLexer, 't_%s' % G.LETTER.name, staticmethod(lambda x: x))
+        getattr(LetterLexer, 't_%s' % G.LETTER.name).__doc__ = r'|'.join(['%s' % i for i in letters])
