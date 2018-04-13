@@ -70,7 +70,7 @@ class BaseParser(ParserMixin):
         self.lexer = lexer
         self.tokens = self.lexer.tokens
         self.parser = yacc.yacc(module = self,
-                                start = G.expression.name,
+                                start = G.expression.symbol,
                                 tabmodule = "baseparsetab",
                                 outputdir = ".",
                                 debug = self.__debug)
@@ -78,7 +78,7 @@ class BaseParser(ParserMixin):
 
 def docstring_production(*args):
     def __decorate(method):
-        method.__doc__ = method.__doc__.format(*[x.name for x in args])
+        method.__doc__ = method.__doc__.format(*[x.symbol for x in args])
         return method
 
     return __decorate

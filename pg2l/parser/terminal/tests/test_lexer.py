@@ -19,7 +19,7 @@ class TestLexer(unittest.TestCase):
     def test_letter(self):
         lexer = mixin('LexerMixin',
             (BaseLexer, (), {}),
-            (terminals[G.LETTER.name], ('ABCD',), {}),)
+            (terminals[G.LETTER.symbol], ('ABCD',), {}),)
         lexer.build()
         lexer.lexer.input('A')
 
@@ -31,7 +31,7 @@ class TestLexer(unittest.TestCase):
     def test_number(self):
         lexer = mixin('LexerMixin',
                           (BaseLexer, (), {}),
-                          (terminals[G.NUMBER.name], (-1,0,1), {}),)
+                          (terminals[G.NUMBER.symbol], (-1,0,1), {}),)
 
         lexer.build()
         lexer.lexer.input('10-1')
@@ -44,7 +44,7 @@ class TestLexer(unittest.TestCase):
     def test_constants(self):
         lexer = mixin('LexerMixin',
                           (BaseLexer, (), {}),
-                          (terminals[G.LBR.name], ('[',), {}),)
+                          (terminals[G.LBR.symbol], ('[',), {}),)
 
         lexer.build()
         lexer.lexer.input('[')
@@ -53,15 +53,15 @@ class TestLexer(unittest.TestCase):
 
         lexer = mixin('LexerMixin',
                           (BaseLexer, (), {}),
-                          (terminals[G.RBR.name], (']',), {}),)
+                          (terminals[G.RBR.symbol], (']',), {}),)
         lexer.build()
         lexer.lexer.input(']')
 
         self.assertEqual(get_tokens(lexer), [('RBR', ']')])
         lexer = mixin('LexerMixin',
                           (BaseLexer, (), {}),
-                          (terminals[G.LBR.name], ('['), {}),
-                          (terminals[G.RBR.name], (']'), {}))
+                          (terminals[G.LBR.symbol], ('['), {}),
+                          (terminals[G.RBR.symbol], (']'), {}))
         lexer.build()
         lexer.lexer.input('[]')
 
@@ -69,8 +69,8 @@ class TestLexer(unittest.TestCase):
 
         lexer = mixin('LexerMixin',
                           (BaseLexer, (), {}),
-                          (terminals[G.LBR.name], (), {}),
-                          (terminals[G.RBR.name], (), {}))
+                          (terminals[G.LBR.symbol], (), {}),
+                          (terminals[G.RBR.symbol], (), {}))
 
         lexer.build()
         lexer.lexer.input('[]')
@@ -79,8 +79,8 @@ class TestLexer(unittest.TestCase):
 
         lexer = mixin('LexerMixin',
                           (BaseLexer, (), {}),
-                          (terminals[G.LBR.name], ('('), {}),
-                          (terminals[G.RBR.name], (')'), {}))
+                          (terminals[G.LBR.symbol], ('('), {}),
+                          (terminals[G.RBR.symbol], (')'), {}))
 
         lexer.build()
         lexer.lexer.input('()')
@@ -90,11 +90,11 @@ class TestLexer(unittest.TestCase):
     def test_operator(self):
         lexer = mixin('LexerMixin',
             (BaseLexer, (), {}),
-            (terminals[G.REWRITE.name], (), {}),
-            (terminals[G.GLCONTEXT.name], (), {}),
-            (terminals[G.GRCONTEXT.name], (), {}),
-            (terminals[G.SLCONTEXT.name], (), {}),
-            (terminals[G.SRCONTEXT.name], (), {})
+            (terminals[G.REWRITE.symbol], (), {}),
+            (terminals[G.GLCONTEXT.symbol], (), {}),
+            (terminals[G.GRCONTEXT.symbol], (), {}),
+            (terminals[G.SLCONTEXT.symbol], (), {}),
+            (terminals[G.SRCONTEXT.symbol], (), {})
             )
 
         lexer.build()
@@ -109,11 +109,11 @@ class TestLexer(unittest.TestCase):
 
         lexer = mixin('LexerMixin',
             (BaseLexer, (), {}),
-            (terminals[G.REWRITE.name], ('⇒'), {}),
-            (terminals[G.GLCONTEXT.name], ('↢'), {}),
-            (terminals[G.GRCONTEXT.name], ('↣'), {}),
-            (terminals[G.SLCONTEXT.name], ('↤'), {}),
-            (terminals[G.SRCONTEXT.name], ('↦'), {})
+            (terminals[G.REWRITE.symbol], ('⇒'), {}),
+            (terminals[G.GLCONTEXT.symbol], ('↢'), {}),
+            (terminals[G.GRCONTEXT.symbol], ('↣'), {}),
+            (terminals[G.SLCONTEXT.symbol], ('↤'), {}),
+            (terminals[G.SRCONTEXT.symbol], ('↦'), {})
             )
 
         lexer.build()

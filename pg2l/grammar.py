@@ -3,18 +3,20 @@ from abc import ABC, abstractmethod
 class AbstractGrammar(ABC):
 
     @abstractmethod
-    def __init__(self, *declarations):
+    def __init__(self, axiom, productions):
         pass
 
-    # @property
-    # @abstractmethod
-    # def terminals(self):
-    #     raise NotImplementedError()
+    @property
+    @abstractmethod
+    def terminals(self):
+        raise NotImplementedError()
+        return set()
 
-    # @property
-    # @abstractmethod
-    # def nonterminals(self):
-    #     raise NotImplementedError()
+    @property
+    @abstractmethod
+    def nonterminals(self):
+        raise NotImplementedError()
+        return set()
 
     # @property
     # @abstractmethod

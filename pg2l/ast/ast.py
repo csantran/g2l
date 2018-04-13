@@ -40,7 +40,7 @@ class Empty(Label, metaclass=MetaSymbol):
         super().__init__('')
 
     def __repr__(self):
-        return '(%s)' % Empty.name
+        return '(%s)' % Empty.symbol
 
 class Jump(NonTerminalLeaf, metaclass=MetaSymbol):
     """A Jump, a string that represent a number"""

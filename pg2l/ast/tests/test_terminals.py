@@ -6,8 +6,8 @@ from pg2l.ast.base import AbstractSymbol
 
 class TestTerminals(unittest.TestCase):
     def test_terminals(self):
-        self.assertEqual(Letter.name, 'LETTER')
-        self.assertEqual(Number.name, 'NUMBER')
+        self.assertEqual(Letter.symbol, 'LETTER')
+        self.assertEqual(Number.symbol, 'NUMBER')
         l = Letter('R')
         n = Number('1')
 

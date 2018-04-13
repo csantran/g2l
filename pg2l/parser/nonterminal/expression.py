@@ -12,7 +12,7 @@ from pg2l.ast import terminals
 from pg2l.ast import MetaDeclaration as G
 
 
-@register_with_nonterminal(G.node.name)
+@register_with_nonterminal(G.node.symbol)
 class NodeParser(ParserMixin):
 
     @staticmethod
@@ -40,7 +40,7 @@ class NodeParser(ParserMixin):
         """
         p[0] = G.label(G.LETTER(p[1]))
 
-@register_with_nonterminal(G.expression.name)
+@register_with_nonterminal(G.expression.symbol)
 class ExpressionParser(ParserMixin):
 
     @staticmethod

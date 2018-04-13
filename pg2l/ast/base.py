@@ -13,6 +13,10 @@ class AbstractMetaSymbol(ABCMeta):
 
 class MetaDeclaration(object):
     """a singleton filled by MetaSymbol, contain all grammar symbols, created dynamicaly"""
+    terminals = []
+    nonterminals = []
+    variables = []
+    constants = []
     pass
 
 class MetaSymbol(AbstractMetaSymbol):
@@ -23,15 +27,31 @@ class MetaSymbol(AbstractMetaSymbol):
     def __new__(mcs, name, bases, classdict):
         # look for __meta_name
         ismetasymbol = False
+        
         for base in bases:
-            if hasattr(base, '_meta_name'):
-                classdict['name'] = base._meta_name(name)
+            if hasattr(base, '_meta_symbol'):
+                print('BASES', name, [x.__name__ for x in bases])
+                classdict['symbol'] = base._meta_symbol(name)
+                
                 ismetasymbol = True
                 break
             
         cls = type(name, bases, classdict)
         if ismetasymbol:
-            setattr(MetaDeclaration, classdict['name'], cls)
+            setattr(MetaDeclaration, classdict['symbol'], cls)
+
+            if classdict['symbol'].islower():
+                MetaDeclaration.nonterminals.append(cls)
+            elif classdict['symbol'].isupper():
+                MetaDeclaration.terminals.append(cls)
+                if bases[0].__name__ == 'Constant':       # Create anothers metaclasses for do this
+                    MetaDeclaration.constants.append(cls)
+                elif bases[0].__name__ == 'Variable':
+                    MetaDeclaration.variables.append(cls)
+                else:
+                    raise Exception(1)
+            else:
+                raise Exception(2)
 
         return cls
 
@@ -40,14 +60,21 @@ class AbstractSymbol(metaclass=AbstractMetaSymbol):
 
     @property
     @abstractmethod
-    def name(self):
+    def symbol(self):
+        """the symbol name's, a string
+
+        Returns
+        -------
+        str:
+           name
+        """
         # this property becomes a class attribut when it is implemented by MetaSymbol
         # so we can get the name attribut of the concrete symbol class without having
         # to instantiate it
         raise NotImplementedError()
 
     @abstractmethod
-    def _meta_name(self, name):
+    def _meta_symbol(self, name):
         """hook for formatting class name
 
         Parameters
@@ -66,7 +93,7 @@ class AbstractSymbol(metaclass=AbstractMetaSymbol):
         raise NotImplementedError()
 
     def __repr__(self):
-        return '(%s %s)' % (str(self.name), str(self))
+        return '(%s %s)' % (str(self.symbol), str(self))
 
 class AbstractSymbolString(AbstractSymbol):
     """
@@ -88,12 +115,12 @@ class AbstractSymbolString(AbstractSymbol):
 
 class AbstractTerminalSymbol(AbstractSymbolString):
     """Abstract base class for grammar terminal symbols"""
-    _meta_name = lambda name : name.upper()
+    _meta_symbol = lambda name : name.upper()
     
 class AbstractNonTerminalLeafSymbol(AbstractSymbolString):
     """Abstract base class for grammar nonterminal leaf symbols"""
-    _meta_name = lambda name : name.lower()
+    _meta_symbol = lambda name : name.lower()
 
 class AbstractNonTerminalBranchSymbol(AbstractSymbol):
     """Abstract base class for grammar nonterminal branch symbols"""
-    _meta_name = lambda name : name.lower()
+    _meta_symbol = lambda name : name.lower()

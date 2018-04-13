@@ -11,14 +11,14 @@ from .base import LexerMixin, register_with_terminal
 from pg2l.ast import MetaDeclaration as G
 
 
-@register_with_terminal(G.LETTER.name)
+@register_with_terminal(G.LETTER.symbol)
 class LetterLexer(LexerMixin):
     def __init__(self, letters):
         if not isinstance(letters, str):
             raise TypeError(letters)
 
-        self.tokens += [G.LETTER.name]
+        self.tokens += [G.LETTER.symbol]
         self.variables += list(letters)
 
-        setattr(LetterLexer, 't_%s' % G.LETTER.name, staticmethod(lambda x: x))
-        getattr(LetterLexer, 't_%s' % G.LETTER.name).__doc__ = r'|'.join(['%s' % i for i in letters])
+        setattr(LetterLexer, 't_%s' % G.LETTER.symbol, staticmethod(lambda x: x))
+        getattr(LetterLexer, 't_%s' % G.LETTER.symbol).__doc__ = r'|'.join(['%s' % i for i in letters])

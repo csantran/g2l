@@ -17,9 +17,9 @@ class TestAstAst(unittest.TestCase):
         self.e = ast.Empty()
 
     def test_nonterminal_leaf(self):
-        self.assertEqual(ast.Label.name, 'label')
-        self.assertEqual(ast.Jump.name, 'jump')
-        self.assertEqual(ast.Empty.name, 'empty')
+        self.assertEqual(ast.Label.symbol, 'label')
+        self.assertEqual(ast.Jump.symbol, 'jump')
+        self.assertEqual(ast.Empty.symbol, 'empty')
 
         self.assertEqual(repr(self.l), '(label A)')
         self.assertEqual(repr(self.j), '(jump -1)')

@@ -21,18 +21,18 @@ class TestExpression(unittest.TestCase):
     def test_expression(self):
         lexer = mixin('LexerMixin',
                           (BaseLexer, (), {}),
-                          (terminals[G.LETTER.name], ('ABCD',), {}),
-                              (terminals[G.NUMBER.name], (-1,0,1), {}),
-                              (terminals[G.LBR.name], ('[',), {}),
-                              (terminals[G.RBR.name], (']',), {})
+                          (terminals[G.LETTER.symbol], ('ABCD',), {}),
+                              (terminals[G.NUMBER.symbol], (-1,0,1), {}),
+                              (terminals[G.LBR.symbol], ('[',), {}),
+                              (terminals[G.RBR.symbol], (']',), {})
                                   )
         lexer.build()
         lexer.lexer.input('A1[BB]')
 
         parser = mixin('MixinParser',
             (BaseParser, (), {}),
-            (nonterminals[G.expression.name], (), {}),
-            (nonterminals[G.node.name], (), {}),)
+            (nonterminals[G.expression.symbol], (), {}),
+            (nonterminals[G.node.symbol], (), {}),)
 
         parser.build(lexer)
 
@@ -64,18 +64,18 @@ node : label""")
     def test_p_error(self):
         lexer = mixin('LexerMixin',
                           (BaseLexer, (), {'strict':True}),
-                          (terminals[G.LETTER.name], ('ABCD',), {}),
-                              (terminals[G.NUMBER.name], (-1,0,1), {}),
-                              (terminals[G.LBR.name], ('[',), {}),
-                              (terminals[G.RBR.name], (']',), {})
+                          (terminals[G.LETTER.symbol], ('ABCD',), {}),
+                              (terminals[G.NUMBER.symbol], (-1,0,1), {}),
+                              (terminals[G.LBR.symbol], ('[',), {}),
+                              (terminals[G.RBR.symbol], (']',), {})
                                   )
         lexer.build()
         lexer.lexer.input('A1[BB]')
 
         parser = mixin('MixinParser',
             (BaseParser, (), {'strict':True}),
-            (nonterminals[G.expression.name], (), {}),
-            (nonterminals[G.node.name], (), {}),)
+            (nonterminals[G.expression.symbol], (), {}),
+            (nonterminals[G.node.symbol], (), {}),)
 
         parser.build(lexer)
 

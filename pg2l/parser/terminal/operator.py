@@ -20,35 +20,35 @@ DEFAULT_OP_SRCONTEXT = '}' # string right-context operator
 
 class Operator(LexerMixin):
     def __init__(self, operator, grammar):
-        self.tokens.append(grammar.name)
+        self.tokens.append(grammar.symbol)
         self.operators.append(operator)
         # setattr(self, 't_%s' % grammar_operator, r'%s' % operator)
-        setattr(Operator, 't_%s' % grammar.name, staticmethod(lambda x: x))
-        getattr(Operator, 't_%s' % grammar.name).__doc__ = r'\%s' % operator
-        getattr(Operator, 't_%s' % grammar.name).__name__ = grammar.name
-        getattr(Operator, 't_%s' % grammar.name).__qualname__ = grammar.name
+        setattr(Operator, 't_%s' % grammar.symbol, staticmethod(lambda x: x))
+        getattr(Operator, 't_%s' % grammar.symbol).__doc__ = r'\%s' % operator
+        getattr(Operator, 't_%s' % grammar.symbol).__symbol__ = grammar.symbol
+        getattr(Operator, 't_%s' % grammar.symbol).__qualsymbol__ = grammar.symbol
 
-@register_with_terminal(G.REWRITE.name)
+@register_with_terminal(G.REWRITE.symbol)
 class RewriteLexer(Operator):
     def __init__(self, operator=DEFAULT_OP_REWRITE):
         Operator.__init__(self, operator, G.REWRITE)
 
-@register_with_terminal(G.GLCONTEXT.name)
+@register_with_terminal(G.GLCONTEXT.symbol)
 class GLContextLexer(Operator):
     def __init__(self, operator=DEFAULT_OP_GLCONTEXT):
         Operator.__init__(self, operator, G.GLCONTEXT)
 
-@register_with_terminal(G.GRCONTEXT.name)
+@register_with_terminal(G.GRCONTEXT.symbol)
 class GRContextLexer(Operator):
     def __init__(self, operator=DEFAULT_OP_GRCONTEXT):
         Operator.__init__(self, operator, G.GRCONTEXT)
 
-@register_with_terminal(G.SLCONTEXT.name)
+@register_with_terminal(G.SLCONTEXT.symbol)
 class SLContextLexer(Operator):
     def __init__(self, operator=DEFAULT_OP_SLCONTEXT):
         Operator.__init__(self, operator, G.SLCONTEXT)
 
-@register_with_terminal(G.SRCONTEXT.name)
+@register_with_terminal(G.SRCONTEXT.symbol)
 class SRContextLexer(Operator):
     def __init__(self, operator=DEFAULT_OP_SRCONTEXT):
         Operator.__init__(self, operator, G.SRCONTEXT)

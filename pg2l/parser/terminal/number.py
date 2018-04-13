@@ -13,16 +13,16 @@ def num(t):
     t.value = int(t.value)
     return t
 
-@register_with_terminal(G.NUMBER.name)
+@register_with_terminal(G.NUMBER.symbol)
 class NumberLexer(LexerMixin):
     def __init__(self, *numbers):
-        self.tokens += [G.NUMBER.name]
+        self.tokens += [G.NUMBER.symbol]
         self.variables += [str(x) for x in numbers]
         numbers = [str(x) for x in numbers]
 
-        setattr(NumberLexer, 't_%s' % G.NUMBER.name, staticmethod(num))
-        getattr(NumberLexer, 't_%s' % G.NUMBER.name).__doc__ = r'|'.join(['%s' % i for i in numbers])
-        getattr(NumberLexer, 't_%s' % G.NUMBER.name).__name__ = G.NUMBER.name
-        getattr(NumberLexer, 't_%s' % G.NUMBER.name).__qualname__ = G.NUMBER.name
+        setattr(NumberLexer, 't_%s' % G.NUMBER.symbol, staticmethod(num))
+        getattr(NumberLexer, 't_%s' % G.NUMBER.symbol).__doc__ = r'|'.join(['%s' % i for i in numbers])
+        getattr(NumberLexer, 't_%s' % G.NUMBER.symbol).__symbol__ = G.NUMBER.symbol
+        getattr(NumberLexer, 't_%s' % G.NUMBER.symbol).__qualsymbol__ = G.NUMBER.symbol
 
 
