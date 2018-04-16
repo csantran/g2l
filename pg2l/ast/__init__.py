@@ -9,4 +9,4 @@
 from . import ast as _
 from . import terminals as _
 from .base import MetaDeclaration
-from .grammar import MetaGrammar
+# from .grammar import MetaGrammar

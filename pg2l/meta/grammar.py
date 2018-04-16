@@ -10,8 +10,6 @@ from collections import defaultdict
 
 import networkx as nx
 
-from .base import AbstractTerminalSymbol, MetaDeclaration as G
-
 from pg2l.grammar import AbstractGrammar
 
 
