@@ -17,40 +17,48 @@ from pg2l.meta.grammar import MetaGrammar
 import networkx as nx
 # import numpy as np
 # import matplotlib.pyplot as plt
-# from networkx.drawing.nx_agraph import to_agraph
+from networkx.drawing.nx_agraph import to_agraph
 # import tempfile
 # import tkinter as tk
 
+from pg2l.meta import declaration as G
+
 class TestMetaGrammar(unittest.TestCase):
 
-    def _test_meta_grammar(self):
+    def test_meta_grammar(self):
         meta = MetaGrammar(
-            G.expression,
-            (G.LETTER, 'AB'),
-            (G.NUMBER, (1,)),
-            (G.LBR, '['),
-            (G.RBR, ']'),
-            (G.REWRITE, ':'),
-            (G.expression, G.axiom),
-            (G.axiom, G.level),
-            (G.level, G.basenode),
-            (G.level, G.level, G.basenode),
-            (G.basenode, G.node),
-            (G.node, G.label),
-            (G.label, G.LETTER),
+            ('LETTER', 'AB', G.VAR),
+            ('NUMBER', [0,1,2], G.VAR),
+            # ('LBR', '[', G.CONST),
+            # ('RBR', ']', G.CONST),
+            # ('REWRITE', ':', G.CONST),
+            (G.S, 'expression'),
+            ('expression', 'axiom'),
+            ('axiom', 'level'),
+            ('level', 'basenode'),
+            ('level', 'level', 'basenode'),
+            ('basenode', 'node'),
+            ('basenode', 'jnode'),
+            ('node', 'label'),
+            ('label', 'LETTER'),
+            ('jnode', 'node', 'round'),
+            ('round', 'number'),
+            ('round', 'round', 'number'),
+            ('number', 'NUMBER'),
             )
 
         print('#')
-        print(meta.axiom)
-        print(meta.terminals)
-        print(meta.nonterminals)
-        print(meta.productions)
-        # A = to_agraph(meta.derivation_graph)
-        # A.layout('dot')
-        # A.draw('multi.png')
+        print(meta)
+        # print(meta.axiom)
+        # print(meta.terminals)
+        # print(meta.nonterminals)
+        # print(meta.productions)
+        A = to_agraph(meta.derivation_graph)
+        A.layout('dot')
+        A.draw('multi.png')
         
-        print(meta.derivation_graph.edges(data=True))
-        print(list(nx.selfloop_edges(meta.derivation_graph)))
+        # print(meta.derivation_graph.edges(data=True))
+        # print(list(nx.selfloop_edges(meta.derivation_graph)))
 
 if __name__ == '__main__':
     unittest.main(verbosity=2)
