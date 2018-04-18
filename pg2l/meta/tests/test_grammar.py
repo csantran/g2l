@@ -26,33 +26,67 @@ from pg2l.meta import declaration as G
 class TestMetaGrammar(unittest.TestCase):
 
     def test_meta_grammar(self):
+        # meta = MetaGrammar(
+        #     ('LETTER', 'AB', G.VAR),
+        #     ('NUMBER', [0,1,2], G.VAR),
+        #     ('REWRITE', ':', G.CONST),
+        #     ('expression', 'string'),
+        #     ('expression', 'production'),
+        #     ('string', 'level'),
+        #     ('level', 'basenode'),
+        #     ('level', 'level', 'basenode'),
+        #     ('basenode', 'node'),
+        #     ('basenode', 'jnode'),
+        #     ('node', 'LETTER'),
+        #     ('jnode', 'node', 'round'),
+        #     ('round', 'NUMBER'),
+        #     ('round', 'round', 'NUMBER'),
+        #     ('production', 'basenode', 'REWRITE', 'string'),
+        #     )
+
         meta = MetaGrammar(
             ('LETTER', 'AB', G.VAR),
-            ('NUMBER', [0,1,2], G.VAR),
-            # ('LBR', '[', G.CONST),
-            # ('RBR', ']', G.CONST),
-            # ('REWRITE', ':', G.CONST),
-            (G.S, 'expression'),
-            ('expression', 'axiom'),
-            ('axiom', 'level'),
-            ('level', 'basenode'),
-            ('level', 'level', 'basenode'),
-            ('basenode', 'node'),
-            ('basenode', 'jnode'),
-            ('node', 'label'),
-            ('label', 'LETTER'),
-            ('jnode', 'node', 'round'),
-            ('round', 'number'),
-            ('round', 'round', 'number'),
-            ('number', 'NUMBER'),
+            ('NUMBER', [0,1,2], G.CONST),
+            ('LBR', '[', G.CONST),
+            ('RBR', ']', G.CONST),
+            ('string', 'node', 'string'),
+            ('string', 'substring', 'string'),
+            ('string', 'esubstring', 'string'),
+            ('string', 'string'),
+            ('string', 'empty'),
+            ('node', 'LETTER', 'jump'),
+            ('jump', 'NUMBER', 'jump'),
+            ('jump', 'jump'),
+            ('esubstring', 'LBR', 'RBR'),
             )
+        # meta = MetaGrammar(
+        #     ('LETTER', 'AB', G.VAR),
+        #     ('NUMBER', [0,1,2], G.VAR),
+        #     # ('LBR', '[', G.CONST),
+        #     # ('RBR', ']', G.CONST),
+        #     ('REWRITE', ':', G.CONST),
+        #     ('expression', 'string'),
+        #     ('expression', 'production'),
+        #     ('string', 'level'),
+        #     ('level', 'basenode'),
+        #     ('level', 'level', 'basenode'),
+        #     ('basenode', 'node'),
+        #     ('basenode', 'jnode'),
+        #     ('node', 'LETTER'),
+        #     ('jnode', 'node', 'round'),
+        #     ('round', 'NUMBER'),
+        #     ('round', 'round', 'NUMBER'),
+        #     ('production', 'basenode', 'REWRITE', 'string'),
+        #     )
 
         print('#')
         print(meta)
-        # print(meta.axiom)
-        # print(meta.terminals)
-        # print(meta.nonterminals)
-        # print(meta.productions)
+        print(meta.axiom)
+        print(meta.terminals)
+        print(meta.nonterminals)
+        print(meta.productions)
+
+        
         A = to_agraph(meta.derivation_graph)
         A.layout('dot')
         A.draw('multi.png')
