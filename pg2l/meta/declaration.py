@@ -1,5 +1,0 @@
-S = 'S'
-CONST = 'CONST'
-VAR = 'VAR'
-META = 'META'
-SELF = 'SELF'
