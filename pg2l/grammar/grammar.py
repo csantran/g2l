@@ -13,30 +13,19 @@ import types
 import networkx as nx
 import networkx.algorithms as al
 
-
-# from .declaration import VAR, CONST, S, META, SELF
-
-# from pg2l.grammar import AbstractGrammar
-
-class Grammar(object):
-
-    def __init__(self, graph=None):
-        self.graph = graph or nx.DiGraph()
+class Grammar(nx.DiGraph):
 
     @property
     def axiom(self):
-        axiom = [n for n in self.graph.nodes() if not
-                     [p for p in self.graph.predecessors(n) if p != n]]
+        inputs = [n for n in self.nodes() if not
+                     [p for p in self.predecessors(n) if p != n]]
         
-        if len(axiom) > 1:
-            raise Exception(axiom)
-
-        return axiom[0]
+        return inputs[0] if len(inputs) == 1 else None
 
     @property
     def terminals(self):
-        return set([n for n in self.graph.nodes() if
-                            self.graph.out_degree(n) == 0 and n != 'ε'])
+        return set([n for n in self.nodes() if
+                            self.out_degree(n) == 0 and n != 'empty'])
 
     @property
     def nonterminals(self):
@@ -44,16 +33,26 @@ class Grammar(object):
         
     @property
     def alphabet(self):
-        return set(self.graph.nodes())
+        return set(self.nodes())
 
     @property
     def productions(self):
-        for u,v,data in self.graph.edges(data=True):
+        productions = {}
+        
+        for u,v,data in self.edges(data=True):
+
+            if u not in productions:
+                productions[u] = []
+            
             for prod in data['production']:
-                yield (u, prod)
+                prod_hash = ''.join(str(x) for x in prod)
+                
+                if prod_hash not in productions[u]:
+                    productions[u].append(prod_hash)
+                    yield (u, prod)
 
     def __add__(self, grammar):
-        return Grammar(nx.compose(self.graph, grammar.graph))
+        return Grammar(nx.compose(self, grammar))
 
 def add_production(graph, declaration):
     lhs, rhs = declaration[0], declaration[1:]
@@ -79,7 +78,7 @@ def build(*declarations):
     G = Grammar()
     
     for declaration in declarations:
-        add_production(G.graph, declaration)
+        add_production(G, declaration)
 
     return G
 

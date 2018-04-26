@@ -25,7 +25,7 @@ class TestMetaGrammar(unittest.TestCase):
         print('PRODS', list(M.productions))
         print('ALPHA', M.alphabet)
         
-        d = to_agraph(M.graph)
+        d = to_agraph(M)
         d.layout('dot')
         d.draw('meta.png')
 
