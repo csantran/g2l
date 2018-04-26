@@ -17,7 +17,7 @@ class Grammar(nx.DiGraph):
     def axiom(self):
         inputs = [n for n in self.nodes() if not
                      [p for p in self.predecessors(n) if p != n]]
-        
+
         return inputs[0] if len(inputs) == 1 else None
 
     @property
@@ -37,11 +37,11 @@ class Grammar(nx.DiGraph):
     def productions(self):
         productions = {}
 
-        for u,v,data in self.edges(data=True):
+        for u,_,data in self.edges(data=True):
 
             if u not in productions:
                 productions[u] = []
-
+                
             for prod in data['production']:
                 prod_hash = ''.join(str(x) for x in prod)
 
@@ -80,28 +80,28 @@ def build(*declarations):
 
     return G
 
-def grammar_relabel_to_integer(G):
-    without_cycle = nx.DiGraph()
-    for n, data in G.graph.nodes(data=True):
-        without_cycle.add_path(list(nx.shortest_path(G.graph,G.axiom,n)))
+# def grammar_relabel_to_integer(G):
+#     without_cycle = nx.DiGraph()
+#     for n, data in G.graph.nodes(data=True):
+#         without_cycle.add_path(list(nx.shortest_path(G.graph,G.axiom,n)))
 
-    g2h_mapping = {n:i+1 for i,n in enumerate(nx.topological_sort(without_cycle))
-                       if n not in ('ε', '$')}
+#     g2h_mapping = {n:i+1 for i,n in enumerate(nx.topological_sort(without_cycle))
+#                        if n not in ('ε', '$')}
 
-    g2h_mapping["$"] = 0
+#     g2h_mapping["$"] = 0
 
-    if 'ε' in without_cycle:
-        g2h_mapping['ε'] = -1
+#     if 'ε' in without_cycle:
+#         g2h_mapping['ε'] = -1
 
-    H = nx.relabel.relabel_nodes(G.graph, mapping=g2h_mapping, copy=False)
+#     H = nx.relabel.relabel_nodes(G.graph, mapping=g2h_mapping, copy=False)
 
-    h2g_mapping = {v:k for k,v in g2h_mapping.items()}
+#     h2g_mapping = {v:k for k,v in g2h_mapping.items()}
 
-    for n in list(H.nodes()):
-        H.nodes[n]['symbol'] = h2g_mapping[n]
+#     for n in list(H.nodes()):
+#         H.nodes[n]['symbol'] = h2g_mapping[n]
 
-    for u,v,data in H.edges(data=True):
-        H[u][v]['production'] = [[g2h_mapping[x] for x in prod]
-                                     for prod in H[u][v]['production']]
+#     for u,v,data in H.edges(data=True):
+#         H[u][v]['production'] = [[g2h_mapping[x] for x in prod]
+#                                      for prod in H[u][v]['production']]
 
-    return Grammar(H), (g2h_mapping, h2g_mapping)
+#     return Grammar(H), (g2h_mapping, h2g_mapping)

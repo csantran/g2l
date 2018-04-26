@@ -7,7 +7,7 @@ class TestMetaGrammar(unittest.TestCase):
 
     def test_meta_grammar(self):
 
-        M = build( 
+        M = build(
             ('S', 'F'),
             ('S', '(', 'S', '+', 'F', ')'),
             ('F', '1'),

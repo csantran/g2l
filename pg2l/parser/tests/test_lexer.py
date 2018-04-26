@@ -1,9 +1,8 @@
 import unittest
-import re
 
 import ply.lex as lex
 
-from pg2l.grammar import build, Grammar
+from pg2l.grammar import build
 from pg2l.parser.lexer import Lexer
 
 
@@ -46,7 +45,7 @@ class TestLexer(unittest.TestCase):
 
         with self.assertWarns(UserWarning):
             list(get_tokens(lexer))
-            
+
 
 if __name__ == '__main__':
     unittest.main(verbosity=2)
