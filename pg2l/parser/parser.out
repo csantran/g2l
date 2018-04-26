@@ -1,0 +1,206 @@
+Created by PLY version 3.7 (http://www.dabeaz.com/ply)
+
+Grammar
+
+Rule 0     S' -> string
+Rule 1     empty -> <empty>
+Rule 2     jump -> empty
+Rule 3     level -> LBR substring RBR jump
+Rule 4     string -> empty
+Rule 5     substring -> empty
+Rule 6     symbol -> LETTER jump
+Rule 7     jump -> jump NUMBER
+Rule 8     string -> string level
+Rule 9     string -> string symbol
+Rule 10    substring -> substring symbol
+
+Terminals, with rules where they appear
+
+LBR                  : 3
+LETTER               : 6
+NUMBER               : 7
+RBR                  : 3
+error                : 
+
+Nonterminals, with rules where they appear
+
+empty                : 2 4 5
+jump                 : 3 6 7
+level                : 8
+string               : 8 9 0
+substring            : 3 10
+symbol               : 9 10
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . string
+    (4) string -> . empty
+    (8) string -> . string level
+    (9) string -> . string symbol
+    (1) empty -> .
+
+    LBR             reduce using rule 1 (empty -> .)
+    LETTER          reduce using rule 1 (empty -> .)
+    $end            reduce using rule 1 (empty -> .)
+
+    empty                          shift and go to state 1
+    string                         shift and go to state 2
+
+state 1
+
+    (4) string -> empty .
+
+    LBR             reduce using rule 4 (string -> empty .)
+    LETTER          reduce using rule 4 (string -> empty .)
+    $end            reduce using rule 4 (string -> empty .)
+
+
+state 2
+
+    (0) S' -> string .
+    (8) string -> string . level
+    (9) string -> string . symbol
+    (3) level -> . LBR substring RBR jump
+    (6) symbol -> . LETTER jump
+
+    LBR             shift and go to state 6
+    LETTER          shift and go to state 3
+
+    symbol                         shift and go to state 4
+    level                          shift and go to state 5
+
+state 3
+
+    (6) symbol -> LETTER . jump
+    (2) jump -> . empty
+    (7) jump -> . jump NUMBER
+    (1) empty -> .
+
+    NUMBER          reduce using rule 1 (empty -> .)
+    LBR             reduce using rule 1 (empty -> .)
+    LETTER          reduce using rule 1 (empty -> .)
+    $end            reduce using rule 1 (empty -> .)
+    RBR             reduce using rule 1 (empty -> .)
+
+    empty                          shift and go to state 7
+    jump                           shift and go to state 8
+
+state 4
+
+    (9) string -> string symbol .
+
+    LBR             reduce using rule 9 (string -> string symbol .)
+    LETTER          reduce using rule 9 (string -> string symbol .)
+    $end            reduce using rule 9 (string -> string symbol .)
+
+
+state 5
+
+    (8) string -> string level .
+
+    LBR             reduce using rule 8 (string -> string level .)
+    LETTER          reduce using rule 8 (string -> string level .)
+    $end            reduce using rule 8 (string -> string level .)
+
+
+state 6
+
+    (3) level -> LBR . substring RBR jump
+    (5) substring -> . empty
+    (10) substring -> . substring symbol
+    (1) empty -> .
+
+    RBR             reduce using rule 1 (empty -> .)
+    LETTER          reduce using rule 1 (empty -> .)
+
+    empty                          shift and go to state 9
+    substring                      shift and go to state 10
+
+state 7
+
+    (2) jump -> empty .
+
+    NUMBER          reduce using rule 2 (jump -> empty .)
+    LBR             reduce using rule 2 (jump -> empty .)
+    LETTER          reduce using rule 2 (jump -> empty .)
+    $end            reduce using rule 2 (jump -> empty .)
+    RBR             reduce using rule 2 (jump -> empty .)
+
+
+state 8
+
+    (6) symbol -> LETTER jump .
+    (7) jump -> jump . NUMBER
+
+    RBR             reduce using rule 6 (symbol -> LETTER jump .)
+    LETTER          reduce using rule 6 (symbol -> LETTER jump .)
+    LBR             reduce using rule 6 (symbol -> LETTER jump .)
+    $end            reduce using rule 6 (symbol -> LETTER jump .)
+    NUMBER          shift and go to state 11
+
+
+state 9
+
+    (5) substring -> empty .
+
+    RBR             reduce using rule 5 (substring -> empty .)
+    LETTER          reduce using rule 5 (substring -> empty .)
+
+
+state 10
+
+    (3) level -> LBR substring . RBR jump
+    (10) substring -> substring . symbol
+    (6) symbol -> . LETTER jump
+
+    RBR             shift and go to state 13
+    LETTER          shift and go to state 3
+
+    symbol                         shift and go to state 12
+
+state 11
+
+    (7) jump -> jump NUMBER .
+
+    NUMBER          reduce using rule 7 (jump -> jump NUMBER .)
+    LBR             reduce using rule 7 (jump -> jump NUMBER .)
+    LETTER          reduce using rule 7 (jump -> jump NUMBER .)
+    $end            reduce using rule 7 (jump -> jump NUMBER .)
+    RBR             reduce using rule 7 (jump -> jump NUMBER .)
+
+
+state 12
+
+    (10) substring -> substring symbol .
+
+    RBR             reduce using rule 10 (substring -> substring symbol .)
+    LETTER          reduce using rule 10 (substring -> substring symbol .)
+
+
+state 13
+
+    (3) level -> LBR substring RBR . jump
+    (2) jump -> . empty
+    (7) jump -> . jump NUMBER
+    (1) empty -> .
+
+    NUMBER          reduce using rule 1 (empty -> .)
+    LBR             reduce using rule 1 (empty -> .)
+    LETTER          reduce using rule 1 (empty -> .)
+    $end            reduce using rule 1 (empty -> .)
+
+    empty                          shift and go to state 7
+    jump                           shift and go to state 14
+
+state 14
+
+    (3) level -> LBR substring RBR jump .
+    (7) jump -> jump . NUMBER
+
+    LBR             reduce using rule 3 (level -> LBR substring RBR jump .)
+    LETTER          reduce using rule 3 (level -> LBR substring RBR jump .)
+    $end            reduce using rule 3 (level -> LBR substring RBR jump .)
+    NUMBER          shift and go to state 11
+
