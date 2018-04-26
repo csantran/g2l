@@ -8,7 +8,6 @@
 #    Cédric Santran <santrancedric@gmail.com>
 import re
 from warnings import warn
-import ply.lex as lex
 
 from pg2l.grammar import Grammar
 
@@ -36,6 +35,7 @@ class Lexer(object):
                 values = list(L.successors(nterm))
                 setattr(self, 't_%s' % nterm, r'|'.join(['%s' % i for i in values]))
 
-    def t_error(self, t):
+    @staticmethod
+    def t_error(t):
         warn("illegal character '%s'" % t.value[0])
         t.lexer.skip(1)

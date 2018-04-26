@@ -1,12 +1,7 @@
 # -*- coding : utf-8 -*-
-from collections import defaultdict
-from functools import reduce
 import unittest
 
-import networkx as nx
-from networkx.drawing.nx_agraph import to_agraph
-
-from pg2l.grammar.grammar import build, Grammar
+from pg2l.grammar.grammar import build
 
 class TestMetaGrammar(unittest.TestCase):
 
@@ -18,16 +13,18 @@ class TestMetaGrammar(unittest.TestCase):
             ('F', '1'),
             )
 
-        print()
-        print('AX', M.axiom)
-        print('TERM', M.terminals)
-        print('NTERM', M.nonterminals)
-        print('PRODS', list(M.productions))
-        print('ALPHA', M.alphabet)
-        
-        d = to_agraph(M)
-        d.layout('dot')
-        d.draw('meta.png')
+        self.assertEqual(M.axiom, 'S')
+        self.assertEqual(M.terminals, {'(', ')', '1', '+'})
+        self.assertEqual(M.nonterminals, {'S', 'F'})
+
+        self.assertEqual(sorted(list(M.productions)), sorted([
+            ('S', ('(', 'S', '+', 'F', ')')),
+            ('S', ('F',)),
+            ('F', ('1',)),
+            ]))
+
+        self.assertEqual(M.alphabet, {'(', '+', 'S', 'F', '1', ')'})
+
 
 if __name__ == '__main__':
     unittest.main(verbosity=2)

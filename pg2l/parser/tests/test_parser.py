@@ -1,11 +1,9 @@
 import unittest
-import re
+
 import networkx as nx
 from networkx.drawing.nx_agraph import to_agraph
-import ply.lex as lex
-import ply.yacc as yacc
 
-from pg2l.grammar import build, Grammar
+from pg2l.grammar import build
 from pg2l.parser.parser import Parser
 
 

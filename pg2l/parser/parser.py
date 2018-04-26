@@ -18,7 +18,7 @@ from .lexer import Lexer
 
 class BaseModuleParser(object):
     G = None
-    
+
     def __init__(self, lexer_module):
         super().__init__()
         self.tokens = lexer_module.tokens
@@ -58,8 +58,7 @@ class Item(UserList):
 
 def p_no_recursion(lhs, rhs, item_factory):
     lhs_cls = type(lhs, (Item,), {})
-    
-    
+
     def action(self, p):
         ast = map(item_factory , zip(rhs, p[1:]))
         p[0] = lhs_cls(ast)
@@ -68,21 +67,21 @@ def p_no_recursion(lhs, rhs, item_factory):
 
 def p_left_recursion(lhs, rhs, item_factory):
     lhs_cls = type(lhs, (Item,), {})
-    
+
     def action(self, p):
         unpacked = [x for x in p[1] if x]
         p[0] = lhs_cls(unpacked)
         p[0] += map(item_factory, zip(rhs[1:], p[2:]))
 
     return action
-            
+
 def _build_parser_module_class(G):
     P = Grammar(G.subgraph(G.nonterminals))
 
     item_factory = ast_item_factory(P.terminals)
-    
+
     clsdict = {'G':P}
-        
+
     for lhs, rhs in P.productions:
 
         p_name = 'p_%s_%s' % (lhs, '_'.join(rhs))
@@ -107,6 +106,6 @@ class Parser(object):
         lexer_module = Lexer(G)
         parser_module = ParserModule(lexer_module)
         self.parser = parser_module.parser
-        
+
     def parse(self, string):
         return self.parser.parse(string)

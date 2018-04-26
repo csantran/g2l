@@ -6,12 +6,10 @@
 #
 # Authors:
 #    Cédric Santran <santrancedric@gmail.com>
-from collections import defaultdict
-from functools import reduce
 import types
 
 import networkx as nx
-import networkx.algorithms as al
+
 
 class Grammar(nx.DiGraph):
 
@@ -30,7 +28,7 @@ class Grammar(nx.DiGraph):
     @property
     def nonterminals(self):
         return self.alphabet - self.terminals
-        
+
     @property
     def alphabet(self):
         return set(self.nodes())
@@ -38,15 +36,15 @@ class Grammar(nx.DiGraph):
     @property
     def productions(self):
         productions = {}
-        
+
         for u,v,data in self.edges(data=True):
 
             if u not in productions:
                 productions[u] = []
-            
+
             for prod in data['production']:
                 prod_hash = ''.join(str(x) for x in prod)
-                
+
                 if prod_hash not in productions[u]:
                     productions[u].append(prod_hash)
                     yield (u, prod)
@@ -67,7 +65,7 @@ def add_production(graph, declaration):
             else:
                 graph.add_edge(lhs, symbol, production=[[symbol]])
     else:
-        
+
         for symbol in rhs:
             if graph.has_edge(lhs, symbol):
                 graph[lhs][symbol]['production'].append(rhs)
@@ -76,7 +74,7 @@ def add_production(graph, declaration):
 
 def build(*declarations):
     G = Grammar()
-    
+
     for declaration in declarations:
         add_production(G, declaration)
 
@@ -91,17 +89,17 @@ def grammar_relabel_to_integer(G):
                        if n not in ('ε', '$')}
 
     g2h_mapping["$"] = 0
-            
+
     if 'ε' in without_cycle:
         g2h_mapping['ε'] = -1
 
     H = nx.relabel.relabel_nodes(G.graph, mapping=g2h_mapping, copy=False)
-            
+
     h2g_mapping = {v:k for k,v in g2h_mapping.items()}
 
     for n in list(H.nodes()):
         H.nodes[n]['symbol'] = h2g_mapping[n]
-                
+
     for u,v,data in H.edges(data=True):
         H[u][v]['production'] = [[g2h_mapping[x] for x in prod]
                                      for prod in H[u][v]['production']]
