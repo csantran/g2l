@@ -1,7 +1,6 @@
 import unittest
 import re
-import networkx as nx
-from networkx.drawing.nx_agraph import to_agraph
+
 import ply.lex as lex
 
 from pg2l.grammar import build, Grammar
@@ -31,10 +30,6 @@ class TestLexer(unittest.TestCase):
             ('number', 'NUMBER', 'number'),
             ('number', 'empty'),
             )
-
-        d = to_agraph(M)
-        d.layout('dot')
-        d.draw('lexer.png')
 
         lexer = lex.lex(module=Lexer(M))
         lexer.input('A21[]')
