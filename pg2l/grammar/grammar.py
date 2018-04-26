@@ -41,7 +41,7 @@ class Grammar(nx.DiGraph):
 
             if u not in productions:
                 productions[u] = []
-                
+
             for prod in data['production']:
                 prod_hash = ''.join(str(x) for x in prod)
 
