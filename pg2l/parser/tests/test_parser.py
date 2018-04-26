@@ -35,13 +35,7 @@ class TestParser(unittest.TestCase):
         # print(parser.__dict__)
         # # yacc.yacc(module=parser, start=M.axiom)
         parser = Parser(M)
-        print()
-        print(repr(parser.parse('AB12[CDA]')))
-        print()
-        
-        print(str(parser.parse('AB12[CDA]')))
-        
-            
+        self.assertEqual(str(parser.parse('AB12[CDA]')), 'AB12[CDA]')
 
 if __name__ == '__main__':
     unittest.main(verbosity=2)
