@@ -1,7 +1,7 @@
 import unittest
 
-import networkx as nx
-from networkx.drawing.nx_agraph import to_agraph
+# import networkx as nx
+# from networkx.drawing.nx_agraph import to_agraph
 
 from pg2l.grammar import build
 from pg2l.parser.parser import Parser
@@ -27,9 +27,9 @@ class TestParser(unittest.TestCase):
             ('substring', 'empty'),
             )
 
-        d = to_agraph(M)
-        d.layout('dot')
-        d.draw('parser.png')
+        # d = to_agraph(M)
+        # d.layout('dot')
+        # d.draw('parser.png')
 
         # parser = Parser(M)
         # print(parser.__dict__)
