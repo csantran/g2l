@@ -37,5 +37,14 @@ class TestParser(unittest.TestCase):
         parser = Parser(M)
         self.assertEqual(str(parser.parse('AB12[CDA]')), 'AB12[CDA]')
 
+        with self.assertWarns(UserWarning):
+            parser.parse('AB12[CDA')
+
+        with self.assertWarns(UserWarning):
+            parser.parse('AB12XCDA')
+
+        with self.assertWarns(UserWarning):
+            parser.parse('AB12]CDA')
+
 if __name__ == '__main__':
     unittest.main(verbosity=2)
