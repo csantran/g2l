@@ -3,7 +3,7 @@ import unittest
 # import networkx as nx
 # from networkx.drawing.nx_agraph import to_agraph
 
-from pg2l.grammar import build
+from pg2l.grammar.grammar import MetaGrammar
 from pg2l.parser.parser import Parser
 
 
@@ -11,7 +11,7 @@ class TestParser(unittest.TestCase):
 
     def test_parser(self):
 
-        M = build(
+        M = MetaGrammar.from_declaration(
             ('LETTER', list('ABCDEF')),
             ('NUMBER', range(4)),
             ('LBR', '['),

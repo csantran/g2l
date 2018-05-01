@@ -1,13 +1,13 @@
 # -*- coding : utf-8 -*-
 import unittest
 
-from pg2l.grammar.grammar import build
+from pg2l.grammar.grammar import MetaGrammar
 
 class TestMetaGrammar(unittest.TestCase):
 
     def test_meta_grammar(self):
 
-        M = build(
+        M = MetaGrammar.from_declaration(
             ('S', 'F'),
             ('S', '(', 'S', '+', 'F', ')'),
             ('F', '1'),

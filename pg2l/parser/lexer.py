@@ -9,7 +9,7 @@
 import re
 from warnings import warn
 
-from pg2l.grammar import Grammar
+from pg2l.grammar.grammar import MetaGrammar
 
 
 class Lexer(object):
@@ -22,7 +22,7 @@ class Lexer(object):
             if v in G.terminals:
                 lex_nodes += [u,v]
 
-        L = Grammar(G.subgraph(list(set(lex_nodes))))
+        L = MetaGrammar(G.subgraph(list(set(lex_nodes))))
 
         for nterm in L.nonterminals:
             self.tokens.append(nterm)

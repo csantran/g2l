@@ -2,7 +2,7 @@ import unittest
 
 import ply.lex as lex
 
-from pg2l.grammar import build
+from pg2l.grammar.grammar import MetaGrammar
 from pg2l.parser.lexer import Lexer
 
 
@@ -18,7 +18,7 @@ class TestLexer(unittest.TestCase):
 
     def test_lexer(self):
 
-        M = build(
+        M = MetaGrammar.from_declaration(
             ('LETTER', list('ABCDEF')),
             ('NUMBER', range(4)),
             ('LBR', '['),

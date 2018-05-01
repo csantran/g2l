@@ -12,7 +12,7 @@ from collections import UserList
 import ply.yacc as yacc
 import ply.lex as lex
 
-from pg2l.grammar import Grammar
+from pg2l.grammar.grammar import MetaGrammar
 
 from .lexer import Lexer
 
@@ -76,7 +76,7 @@ def p_left_recursion(lhs, rhs, item_factory):
     return action
 
 def _build_parser_module_class(G):
-    P = Grammar(G.subgraph(G.nonterminals))
+    P = MetaGrammar(G.subgraph(G.nonterminals))
 
     item_factory = ast_item_factory(P.terminals)
 
