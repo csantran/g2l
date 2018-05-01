@@ -1,7 +1,7 @@
 # -*- coding : utf-8 -*-
 import unittest
 
-from pg2l.grammar.grammar import MetaGrammar
+from pg2l.meta.grammar import MetaGrammar
 
 class TestMetaGrammar(unittest.TestCase):
 

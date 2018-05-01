@@ -9,7 +9,7 @@
 import re
 from warnings import warn
 
-from pg2l.grammar.grammar import MetaGrammar
+from pg2l.meta.grammar import MetaGrammar
 
 
 class Lexer(object):

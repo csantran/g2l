@@ -2,8 +2,8 @@ import unittest
 
 import ply.lex as lex
 
-from pg2l.grammar.grammar import MetaGrammar
-from pg2l.parser.lexer import Lexer
+from pg2l.meta.grammar import MetaGrammar
+from pg2l.meta.parser.lexer import Lexer
 
 
 def get_tokens(lexer):

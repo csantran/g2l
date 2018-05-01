@@ -12,7 +12,7 @@ from collections import UserList
 import ply.yacc as yacc
 import ply.lex as lex
 
-from pg2l.grammar.grammar import MetaGrammar
+from pg2l.meta.grammar import MetaGrammar
 
 from .lexer import Lexer
 
