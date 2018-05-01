@@ -12,7 +12,7 @@ class SimpleGenerator(object):
         while True:
             print('generation', count, tape)
 
-            for i, symbol in enumerate(list(tape)):
+            for symbol in tape:
 
                 # empty rule
                 if symbol == 'empty':
@@ -25,7 +25,7 @@ class SimpleGenerator(object):
                 # nonterminal
                 else:
                     new_tape += choice([rhs for lhs, rhs in G.productions if lhs == symbol])
-                    
+
             count += 1
             if tape != new_tape and not (nb_iteration != -1 and count == nb_iteration):
                 tape = new_tape
@@ -38,5 +38,5 @@ class SimpleGenerator(object):
         for x in new_tape:
             if x in G.terminals:
                 print('X', x)
-        
+
         return ''.join(str(x) for x in new_tape)

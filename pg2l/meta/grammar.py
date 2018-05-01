@@ -86,5 +86,5 @@ class MetaGrammar(nx.DiGraph):
     def __add__(self, grammar):
         if not isinstance(grammar, MetaGrammar):
             raise Exception()
-        
+
         return MetaGrammar(nx.compose(self, grammar))
