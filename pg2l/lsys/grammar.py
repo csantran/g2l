@@ -9,8 +9,9 @@
 from pg2l.base import AbstractGrammar
 from pg2l.meta.parser.parser import Parser
 
+import networkx as nx
 
-class Grammar(AbstractGrammar):
+class Grammar(AbstractGrammar, nx.DiGraph):
 
     @staticmethod
     def from_string(self, meta, grammar):
@@ -20,8 +21,8 @@ class Grammar(AbstractGrammar):
 
     @staticmethod
     def from_declaration(self, meta, declarations):
-        ...
+        pass
 
     @staticmethod
     def from_generator(self, meta, seed):
-        ...
+        pass

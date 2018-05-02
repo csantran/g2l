@@ -29,7 +29,7 @@ class Lexer(object):
 
                         setattr(self, 't_NEWLINE', t_NEWLINE)
                         self.tokens.append('NEWLINE')
-                    
+
                 else:
                     lex_nodes += [u,v]
 
