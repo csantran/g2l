@@ -20,7 +20,18 @@ class Lexer(object):
         lex_nodes = []
         for u,v in G.edges():
             if v in G.terminals:
-                lex_nodes += [u,v]
+                if v == 'NEWLINE':
+                    if 'NEWLINE' not in self.tokens:
+                        def t_NEWLINE(t):
+                            r'\n+'
+                            t.lexer.lineno += len(t.value)
+                            return t
+
+                        setattr(self, 't_NEWLINE', t_NEWLINE)
+                        self.tokens.append('NEWLINE')
+                    
+                else:
+                    lex_nodes += [u,v]
 
         L = MetaGrammar(G.subgraph(list(set(lex_nodes))))
 
