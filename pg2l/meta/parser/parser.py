@@ -75,6 +75,17 @@ def p_left_recursion(lhs, rhs, item_factory):
 
     return action
 
+def p_right_recursion(lhs, rhs, item_factory):
+    lhs_cls = type(lhs, (Item,), {})
+
+    def action(self, p):
+        last = len(p) -1
+        unpacked = [x for x in p[last] if x]
+        p[0] = lhs_cls(map(item_factory, zip(rhs[0:-1], p[1:last])))
+        p[0] += unpacked
+
+    return action
+
 def _build_parser_module_class(G):
     P = MetaGrammar(G.subgraph(G.nonterminals))
 
@@ -88,6 +99,8 @@ def _build_parser_module_class(G):
 
         if lhs == rhs[0]:
             clsdict[p_name] = p_left_recursion(lhs, rhs, item_factory)
+        elif lhs == rhs[-1]:
+            clsdict[p_name] = p_right_recursion(lhs, rhs, item_factory)
         else:
             clsdict[p_name] = p_no_recursion(lhs, rhs, item_factory)
 

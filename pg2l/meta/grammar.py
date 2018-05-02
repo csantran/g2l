@@ -10,9 +10,8 @@ import types
 
 import networkx as nx
 
-from pg2l.base import AbstractGrammar
 
-class MetaGrammar(AbstractGrammar, nx.DiGraph):
+class MetaGrammar(nx.DiGraph):
 
     @property
     def axiom(self):

@@ -6,21 +6,22 @@
 #
 # Authors:
 #    Cédric Santran <santrancedric@gmail.com>
-from pg2l.base import AbstractGrammar
 from pg2l.meta.parser.parser import Parser
 
 import networkx as nx
 
-class Grammar(AbstractGrammar, nx.DiGraph):
+class Grammar(nx.DiGraph):
 
     @staticmethod
-    def from_string(self, meta, grammar):
+    def from_string(meta, grammar):
         parser = Parser(meta)
 
-        print(parser.parse(grammar))
+        expression = parser.parse(grammar)
+        print(expression)
+        print(repr(expression))
 
     @staticmethod
-    def from_declaration(self, meta, declarations):
+    def from_declaration(meta, declarations):
         pass
 
     @staticmethod

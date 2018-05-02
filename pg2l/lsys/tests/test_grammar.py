@@ -13,6 +13,7 @@ class TestLSysGrammar(unittest.TestCase):
     def test_lsys_grammar(self):
 
         M = MetaGrammar.from_declaration(
+            ('START', 'S'),
             ('LETTER', list('ABCDEF')),
             ('NUMBER', range(4)),
             ('LBR', '['),
@@ -33,7 +34,7 @@ class TestLSysGrammar(unittest.TestCase):
             ('grammar', 'axiom', 'NEWLINE', 'productions'),
             ('productions', 'production', 'NEWLINE', 'productions'),
             ('productions', 'empty'),
-            ('axiom', 'string'),
+            ('axiom', 'START', 'REWRITE', 'string'),
             ('production', 'symbol', 'REWRITE', 'string'),
             )
 
@@ -41,13 +42,19 @@ class TestLSysGrammar(unittest.TestCase):
         d.layout('dot')
         d.draw('parser.png')
 
-        parser = Parser(M)
-
-        exp = parser.parse("""A
+        L = Grammar.from_string(M,
+                                    """S:A
 A:AB
-""")
+B:A
+"""
+                                    )
+#         parser = Parser(M)
 
-        print(repr(exp))
+#         exp = parser.parse("""A
+# A:AB
+# """)
+
+#         print(repr(exp))
         # print(repr(exp))
 
 
