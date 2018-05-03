@@ -7,12 +7,22 @@
 # Authors:
 #    Cédric Santran <santrancedric@gmail.com>
 import types
+from collections import namedtuple, UserList
+
 
 import networkx as nx
 
+class GrammarItem(UserList):
+    def __repr__(self):
+        return '(%s %s)' % (type(self).__name__, ','.join(repr(x) for x in self))
+
+    def __str__(self):
+        return '%s' % ''.join(str(x) for x in self if x)
+
 
 class MetaGrammar(nx.DiGraph):
-
+    symbols = None
+    
     @property
     def axiom(self):
         inputs = [n for n in self.nodes() if not
@@ -49,6 +59,9 @@ class MetaGrammar(nx.DiGraph):
                     productions[u].append(prod_hash)
                     yield (u, prod)
 
+    def set_symbols(self, symbols):
+        self.symbols = symbols
+
     @staticmethod
     def add_production(graph, declaration):
         lhs, rhs = declaration[0], declaration[1:]
@@ -77,6 +90,9 @@ class MetaGrammar(nx.DiGraph):
         for declaration in declarations:
             MetaGrammar.add_production(G, declaration)
 
+        Symbol = namedtuple('Symbol', G.nonterminals)
+        symbols = Symbol(**{name:type(name, (GrammarItem,), {}) for name in G.nonterminals})
+        G.set_symbols(symbols)
         return G
 
     @staticmethod

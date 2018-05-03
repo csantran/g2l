@@ -19,6 +19,19 @@ class Grammar(nx.DiGraph):
         expression = parser.parse(grammar)
         print(expression)
         print(repr(expression))
+        print(meta.symbols)
+
+        if expression:
+            if type(expression[0]).__name__ == 'grammar':
+                print('axiom', expression[0][0])
+                for p in expression[0][2]:
+                    if type(p).__name__ == 'production':
+                        print('production', p)
+            else:
+                raise Exception()
+        else:
+            raise Exception()
+        
 
     @staticmethod
     def from_declaration(meta, declarations):

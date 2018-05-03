@@ -12,7 +12,7 @@ from collections import UserList
 import ply.yacc as yacc
 import ply.lex as lex
 
-from pg2l.meta.grammar import MetaGrammar
+from pg2l.meta.grammar import MetaGrammar, GrammarItem
 
 from .lexer import Lexer
 
@@ -45,19 +45,12 @@ def ast_item_factory(terminals):
     def factory(args):
         name, value = args
         # print('NAME', name, value, terminals)
-        return (value != None and name not in terminals) and type(name, (Item,), {})(value) or value
+        return (value != None and name not in terminals) and type(name, (GrammarItem,), {})(value) or value
 
     return factory
 
-class Item(UserList):
-    def __repr__(self):
-        return '(%s %s)' % (type(self).__name__, ','.join(repr(x) for x in self))
-
-    def __str__(self):
-        return '%s' % ''.join(str(x) for x in self if x)
-
 def p_no_recursion(lhs, rhs, item_factory):
-    lhs_cls = type(lhs, (Item,), {})
+    lhs_cls = type(lhs, (GrammarItem,), {})
 
     def action(self, p):
         ast = map(item_factory , zip(rhs, p[1:]))
@@ -66,7 +59,7 @@ def p_no_recursion(lhs, rhs, item_factory):
     return action
 
 def p_left_recursion(lhs, rhs, item_factory):
-    lhs_cls = type(lhs, (Item,), {})
+    lhs_cls = type(lhs, (GrammarItem,), {})
 
     def action(self, p):
         unpacked = [x for x in p[1] if x]
@@ -76,7 +69,7 @@ def p_left_recursion(lhs, rhs, item_factory):
     return action
 
 def p_right_recursion(lhs, rhs, item_factory):
-    lhs_cls = type(lhs, (Item,), {})
+    lhs_cls = type(lhs, (GrammarItem,), {})
 
     def action(self, p):
         last = len(p) -1
