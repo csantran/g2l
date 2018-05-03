@@ -6,7 +6,7 @@ from networkx.drawing.nx_agraph import to_agraph
 from pg2l.meta.grammar import MetaGrammar
 from pg2l.meta.parser.parser import Parser
 from pg2l.lsys.grammar import Grammar
-
+from pg2l.lsys.generator import Generator
 
 class TestLSysGrammar(unittest.TestCase):
 
@@ -48,16 +48,13 @@ A:AB
 B:A
 """
                                     )
-#         parser = Parser(M)
 
-#         exp = parser.parse("""A
-# A:AB
-# """)
+        gen = Generator(L)
 
-#         print(repr(exp))
-        # print(repr(exp))
-
-
+        # language = []
+        # for sentence in Generator(L):
+        #     print(sentence)
+        #     language.append(sentence)
 
 if __name__ == '__main__':
     unittest.main(verbosity=2)

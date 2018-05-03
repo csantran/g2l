@@ -22,7 +22,7 @@ class GrammarItem(UserList):
 
 class MetaGrammar(nx.DiGraph):
     symbols = None
-    
+
     @property
     def axiom(self):
         inputs = [n for n in self.nodes() if not

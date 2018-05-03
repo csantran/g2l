@@ -17,9 +17,6 @@ class Grammar(nx.DiGraph):
         parser = Parser(meta)
 
         expression = parser.parse(grammar)
-        print(expression)
-        print(repr(expression))
-        print(meta.symbols)
 
         if expression:
             if type(expression[0]).__name__ == 'grammar':
@@ -31,7 +28,7 @@ class Grammar(nx.DiGraph):
                 raise Exception()
         else:
             raise Exception()
-        
+
 
     @staticmethod
     def from_declaration(meta, declarations):
