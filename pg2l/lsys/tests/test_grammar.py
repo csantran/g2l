@@ -1,7 +1,7 @@
 import unittest
 
-import networkx as nx
-from networkx.drawing.nx_agraph import to_agraph
+# import networkx as nx
+# from networkx.drawing.nx_agraph import to_agraph
 
 from pg2l.meta.grammar import MetaGrammar
 from pg2l.meta.parser.parser import Parser
@@ -38,9 +38,9 @@ class TestLSysGrammar(unittest.TestCase):
             ('production', 'symbol', 'REWRITE', 'string'),
             )
 
-        d = to_agraph(M)
-        d.layout('dot')
-        d.draw('parser.png')
+        # d = to_agraph(M)
+        # d.layout('dot')
+        # d.draw('parser.png')
 
         L = Grammar.from_string(M,
                                     """S:A
