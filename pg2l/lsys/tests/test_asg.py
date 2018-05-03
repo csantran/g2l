@@ -2,10 +2,9 @@ import unittest
 
 # from pg2l.ast.base import Node, Module, copy
 
-class TestAst(unittest.TestCase):
-    def test_Node(self):
-        # n = Node('A1')
-        # print(n)
+class TestAsg(unittest.TestCase):
+    
+    def test_asg_1(self):
         pass
 
 if __name__ == '__main__':
