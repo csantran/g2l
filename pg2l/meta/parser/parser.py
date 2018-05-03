@@ -7,7 +7,6 @@
 # Authors:
 #    Cédric Santran <santrancedric@gmail.com>
 from warnings import warn
-from collections import UserList
 
 import ply.yacc as yacc
 import ply.lex as lex
