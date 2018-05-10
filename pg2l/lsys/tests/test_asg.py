@@ -1,8 +1,8 @@
 import unittest
 
 
-import networkx as nx
-from networkx.drawing.nx_agraph import to_agraph
+# import networkx as nx
+# from networkx.drawing.nx_agraph import to_agraph
 
 from pg2l.meta.grammar import MetaGrammar
 from pg2l.meta.parser.parser import Parser
@@ -44,9 +44,9 @@ class TestAsg(unittest.TestCase):
         apt = self.parser.parse("A[B1[A[C1F]]D]E")
         S = apt_to_asg(apt)
 
-        d = to_agraph(S)
-        d.layout('dot')
-        d.draw('asg.png')
+        # d = to_agraph(S)
+        # d.layout('dot')
+        # d.draw('asg.png')
 
 
 if __name__ == '__main__':
