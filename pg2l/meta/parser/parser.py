@@ -108,9 +108,9 @@ def _build_parser_module_class(G):
 class Parser(object):
     def __init__(self, G):
         ParserModule = _build_parser_module_class(G)
-        lexer_module = Lexer(G)
-        parser_module = ParserModule(lexer_module)
-        self.parser = parser_module.parser
+        self.lexer_module = Lexer(G)
+        self.parser_module = ParserModule(self.lexer_module)
+        self.parser = self.parser_module.parser
 
     def parse(self, string):
         return self.parser.parse(string)

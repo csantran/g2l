@@ -28,9 +28,7 @@ class TestLSysGrammar(unittest.TestCase):
             ('symbol', 'LETTER', 'jump'),
             ('jump', 'jump', 'NUMBER'),
             ('jump', 'empty'),
-            ('level', 'LBR', 'substring', 'RBR', 'jump'),
-            ('substring', 'substring', 'symbol'),
-            ('substring', 'empty'),
+            ('level', 'LBR', 'string', 'RBR', 'jump'),
             ('grammar', 'axiom', 'NEWLINE', 'productions'),
             ('productions', 'production', 'NEWLINE', 'productions'),
             ('productions', 'empty'),
@@ -44,7 +42,7 @@ class TestLSysGrammar(unittest.TestCase):
 
         L = Grammar.from_string(M,
                                     """S:A
-A:AB
+A:A[C]B
 B:A
 """
                                     )

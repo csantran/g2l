@@ -39,12 +39,21 @@ class Lexer(object):
             self.tokens.append(nterm)
 
             if L.out_degree(nterm) == 1:
+
                 constant = list(L.successors(nterm))[0]
-                setattr(self, 't_%s' % nterm, '%s' % re.escape(constant))
+
+                if isinstance(constant, str):
+                    setattr(self, 't_%s' % nterm, '%s' % re.escape(constant))
+                elif isinstance(constant, re._pattern_type):
+                    setattr(self, 't_%s' % nterm, constant.pattern)
+                else:
+                    raise Exception()
 
             else:
                 values = list(L.successors(nterm))
                 setattr(self, 't_%s' % nterm, r'|'.join(['%s' % i for i in values]))
+
+        self.L = L
 
     @staticmethod
     def t_error(t):
